@@ -28,6 +28,11 @@ using Poco::Util::OptionCallback;
 using Poco::Util::HelpFormatter;
 
 /**
+ * @brief Default server port
+ */
+static const int DEFAULT_SERVER_PORT = 8080;
+
+/**
  * @brief Default device pin value
  */
 static const int DEFAULT_DEVICE_PIN = 22;
@@ -91,9 +96,11 @@ int SensorReaderApplication::main(const std::vector<std::string>&)
         return ServerApplication::EXIT_OK;
     }
 
+    unsigned short port = getServerPort();
+
     unsigned int pin = getDevicePin();
     SensorTypes type = getDeviceType();
-    auto strategy = getReadingStrategy(type);
+    auto strategy = getDeviceReadingStrategy(type);
 
     auto reader = std::make_unique<SensorReader>(
                       pin,
@@ -101,7 +108,7 @@ int SensorReaderApplication::main(const std::vector<std::string>&)
                       std::move(strategy),
                       std::make_shared<SensorDataStorage>());
 
-    HttpSensorReaderServer server(std::move(reader));
+    HttpSensorReaderServer server(std::move(reader), port);
     server.run();
     waitForTerminationRequest();
     server.shutdown();
@@ -118,18 +125,24 @@ void SensorReaderApplication::displayHelp()
     helpFormatter.format(std::cout);
 }
 
-unsigned int SensorReaderApplication::getDevicePin()
+unsigned short SensorReaderApplication::getServerPort() const
+{
+    return static_cast<unsigned short>(
+                config().getUInt("server.port", DEFAULT_SERVER_PORT));
+}
+
+unsigned int SensorReaderApplication::getDevicePin() const
 {
     return config().getUInt("reader.devicePin", DEFAULT_DEVICE_PIN);
 }
 
-SensorTypes SensorReaderApplication::getDeviceType()
+SensorTypes SensorReaderApplication::getDeviceType() const
 {
     std::string value = config().getString("reader.deviceType", DEFAULT_DEVICE_TYPE);
     return translateSensorTypeFromString(value);
 }
 
-SensorReadingStrategy::Ptr SensorReaderApplication::getReadingStrategy(SensorTypes deviceType)
+SensorReadingStrategy::Ptr SensorReaderApplication::getDeviceReadingStrategy(SensorTypes deviceType) const
 {
     return SensorReadingStrategyFactory::createReadingStrategy(deviceType);
 }

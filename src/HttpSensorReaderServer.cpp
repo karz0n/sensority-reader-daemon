@@ -14,14 +14,14 @@
 using Poco::Net::HTTPServerParams;
 using Poco::Net::HTTPServer;
 
-HttpSensorReaderServer::HttpSensorReaderServer(SensorReader::Ptr reader)
-    : SensorReaderServer(std::move(reader))
-    , _port(8080), _runned(false)
+HttpSensorReaderServer::HttpSensorReaderServer(SensorReader::Ptr r, unsigned short p)
+    : SensorReaderServer(std::move(r))
+    , _runned(false)
 {
     _formatter = std::make_shared<JsonFormatter>();
     _server = std::make_unique<HTTPServer>(
         new HttpSensorReaderRequestHandlerFactory(storage(), *_formatter),
-        _port,
+        p,
         new HTTPServerParams);
 }
 

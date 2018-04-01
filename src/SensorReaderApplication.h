@@ -37,9 +37,10 @@ protected:
 
 private:
     void displayHelp();
-    unsigned int getDevicePin();
-    SensorTypes getDeviceType();
-    SensorReadingStrategy::Ptr getReadingStrategy(SensorTypes deviceType);
+    unsigned short getServerPort() const;
+    unsigned int getDevicePin() const;
+    SensorTypes getDeviceType() const;
+    SensorReadingStrategy::Ptr getDeviceReadingStrategy(SensorTypes deviceType) const;
 
 private:
 	bool _helpRequested;
