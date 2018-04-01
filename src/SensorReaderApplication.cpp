@@ -73,8 +73,29 @@ void SensorReaderApplication::defineOptions(OptionSet& options)
         Option("help", "h", "Display argument help information")
             .required(false)
 			.repeatable(false)
-            .callback(
+            .callback(   
                 OptionCallback<SensorReaderApplication>(this, &SensorReaderApplication::handleHelp)));
+
+    options.addOption(
+        Option("port", "p", "Set HTTP server port")
+            .required(false)
+            .repeatable(false)
+            .argument("value")
+            .binding("server.port"));
+
+    options.addOption(
+        Option("devicePin", "", "Set reader device pin")
+            .required(false)
+            .repeatable(false)
+            .argument("value")
+            .binding("reader.devicePin"));
+
+    options.addOption(
+        Option("deviceType", "", "Set reader device type")
+            .required(false)
+            .repeatable(false)
+            .argument("value")
+            .binding("reader.deviceType"));
 }
 
 void SensorReaderApplication::handleOption(const std::string& name, const std::string& value)
