@@ -18,8 +18,6 @@
  */
 class SensorData: public SensorDataReadable {
 public:
-	using Ptr = std::unique_ptr<SensorData>;
-
     virtual ~SensorData() = default;
 
     virtual std::string format(const Formatter& formatter) const = 0;

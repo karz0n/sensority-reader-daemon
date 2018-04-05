@@ -6,7 +6,7 @@
 
 #include "TemperatureSensorReadingStrategy.h"
 
-SensorReadingStrategy::Ptr SensorReadingStrategyFactory::createReadingStrategy(SensorTypes type)
+std::unique_ptr<SensorReadingStrategy> SensorReadingStrategyFactory::createReadingStrategy(SensorTypes type)
 {
     if (isTemperatureSensor(type)) {
         return SensorReadingStrategyFactory::createTemperatureReadingStrategy();
@@ -15,7 +15,7 @@ SensorReadingStrategy::Ptr SensorReadingStrategyFactory::createReadingStrategy(S
     throw Poco::InvalidArgumentException("Unknown sensor type");
 }
 
-SensorReadingStrategy::Ptr SensorReadingStrategyFactory::createTemperatureReadingStrategy()
+std::unique_ptr<SensorReadingStrategy> SensorReadingStrategyFactory::createTemperatureReadingStrategy()
 {
     return std::make_unique<TemperatureSensorReadingStrategy>();
 }

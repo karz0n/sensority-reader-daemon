@@ -8,6 +8,8 @@
 #ifndef TEMPERATURESENSORREADINGSTRATEGY_H_
 #define TEMPERATURESENSORREADINGSTRATEGY_H_
 
+#include <memory>
+
 #include "SensorData.h"
 #include "SensorReadingStrategy.h"
 
@@ -17,7 +19,7 @@ public:
 	void cleanup() override;
 	void pause(SensorTypes type) override;
     inline bool needPause(SensorTypes type) const override;
-    SensorData::Ptr read(std::uint8_t pin, SensorTypes type) override;
+    std::unique_ptr<SensorData> read(std::uint8_t pin, SensorTypes type) override;
 };
 
 //

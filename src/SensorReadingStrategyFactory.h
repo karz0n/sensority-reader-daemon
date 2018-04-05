@@ -1,6 +1,8 @@
 #ifndef SENSORREADINGSTRATEGYFACTORY_H
 #define SENSORREADINGSTRATEGYFACTORY_H
 
+#include <memory>
+
 #include "SensorCommon.h"
 #include "SensorReadingStrategy.h"
 
@@ -10,8 +12,9 @@
 class SensorReadingStrategyFactory
 {
 public:
-    static SensorReadingStrategy::Ptr createReadingStrategy(SensorTypes type);
-    static SensorReadingStrategy::Ptr createTemperatureReadingStrategy();
+    static std::unique_ptr<SensorReadingStrategy> createReadingStrategy(SensorTypes type);
+
+    static std::unique_ptr<SensorReadingStrategy> createTemperatureReadingStrategy();
 };
 
 #endif // SENSORREADINGSTRATEGYFACTORY_H

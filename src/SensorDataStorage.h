@@ -23,7 +23,6 @@
  */
 class SensorDataStorage: public SensorDataReadable {
 public:
-	using Ptr = std::shared_ptr<SensorDataStorage>;
 	using Clock = std::chrono::steady_clock;
 	using TimePoint = std::chrono::time_point<Clock>;
 
@@ -31,29 +30,29 @@ public:
 
     std::string format(const Formatter& formatter) const override;
 
-	void update(SensorData::Ptr data);
+    void update(std::unique_ptr<SensorData> data);
 	bool empty() const;
 	TimePoint lastUpdate() const;
 
 protected:
-	using ReadLocking = std::unique_lock<std::shared_mutex>;
-	using WriteLocking = std::shared_lock<std::shared_mutex>;
+    using ReadLock = std::unique_lock<std::shared_mutex>;
+    using WriteLock = std::shared_lock<std::shared_mutex>;
 
     /**
      * @brief Lock reading of storage.
      * @return The read lock monitor.
      */
-	ReadLocking lockRead() const;
+    ReadLock lockRead() const;
 
     /**
      * @brief Lock writing to storage.
      * @return The write lock monitor.
      */
-	WriteLocking lockWrite() const;
+    WriteLock lockWrite() const;
 
 private:
 	mutable std::shared_mutex _mutex;
-	SensorData::Ptr _data;
+    std::unique_ptr<SensorData> _data;
 	bool _empty;
     TimePoint _lastUpdate;
 };

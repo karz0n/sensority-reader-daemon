@@ -8,7 +8,6 @@
 #ifndef FORMATTER_H_
 #define FORMATTER_H_
 
-#include <memory>
 #include <variant>
 #include <string>
 #include <unordered_map>
@@ -18,7 +17,6 @@
  */
 class Formatter {
 public:
-    using Ptr = std::shared_ptr<Formatter>;
     using Value = std::variant<int, double>;
     using Values = std::unordered_map<std::string, Value>;
 

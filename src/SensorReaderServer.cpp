@@ -9,7 +9,7 @@
 
 #include "SensorReaderServer.h"
 
-SensorReaderServer::SensorReaderServer(SensorReader::Ptr r)
+SensorReaderServer::SensorReaderServer(std::unique_ptr<SensorReader> r)
     : _reader(std::move(r))
 { }
 

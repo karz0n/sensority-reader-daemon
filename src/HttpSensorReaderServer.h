@@ -21,7 +21,7 @@
  */
 class HttpSensorReaderServer: public SensorReaderServer {
 public:
-    HttpSensorReaderServer(SensorReader::Ptr reader, unsigned short port);
+    HttpSensorReaderServer(std::unique_ptr<SensorReader> reader, unsigned short port);
     ~HttpSensorReaderServer() override;
 
     HttpSensorReaderServer(const HttpSensorReaderServer&) = delete;
@@ -32,7 +32,7 @@ public:
 	void shutdown() override;
 
 private:
-    Formatter::Ptr _formatter;
+    std::unique_ptr<Formatter> _formatter;
     std::unique_ptr<Poco::Net::HTTPServer> _server;
     bool _runned;
 };

@@ -8,6 +8,8 @@
 #ifndef SENSORREADERSERVER_H_
 #define SENSORREADERSERVER_H_
 
+#include <memory>
+
 #include "SensorReader.h"
 #include "SensorDataStorage.h"
 
@@ -17,7 +19,7 @@
  */
 class SensorReaderServer {
 protected:
-    SensorReaderServer(SensorReader::Ptr reader);
+    SensorReaderServer(std::unique_ptr<SensorReader> reader);
     virtual ~SensorReaderServer();
 
     SensorReaderServer(const SensorReaderServer&) = delete;
@@ -31,7 +33,7 @@ protected:
     inline const SensorDataStorage& storage() const;
 
 private:
-    SensorReader::Ptr _reader;
+    std::unique_ptr<SensorReader> _reader;
 };
 
 //

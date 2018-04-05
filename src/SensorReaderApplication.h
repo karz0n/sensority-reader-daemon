@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #include <Poco/Util/OptionSet.h>
 #include <Poco/Util/Application.h>
@@ -40,7 +41,7 @@ private:
     unsigned short getServerPort() const;
     unsigned int getDevicePin() const;
     SensorTypes getDeviceType() const;
-    SensorReadingStrategy::Ptr getDeviceReadingStrategy(SensorTypes deviceType) const;
+    std::unique_ptr<SensorReadingStrategy> getDeviceReadingStrategy(SensorTypes deviceType) const;
 
 private:
 	bool _helpRequested;

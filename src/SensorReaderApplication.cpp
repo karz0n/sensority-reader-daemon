@@ -163,7 +163,7 @@ SensorTypes SensorReaderApplication::getDeviceType() const
     return translateSensorTypeFromString(value);
 }
 
-SensorReadingStrategy::Ptr SensorReaderApplication::getDeviceReadingStrategy(SensorTypes deviceType) const
+std::unique_ptr<SensorReadingStrategy> SensorReaderApplication::getDeviceReadingStrategy(SensorTypes deviceType) const
 {
     return SensorReadingStrategyFactory::createReadingStrategy(deviceType);
 }

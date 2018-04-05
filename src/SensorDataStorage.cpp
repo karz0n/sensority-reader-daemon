@@ -13,13 +13,13 @@ SensorDataStorage::SensorDataStorage()
 
 std::string SensorDataStorage::format(const Formatter& formatter) const
 {
-	WriteLocking lock = lockWrite();
+    WriteLock lock = lockWrite();
 	return _data->format(formatter);
 }
 
-void SensorDataStorage::update(SensorData::Ptr data)
+void SensorDataStorage::update(std::unique_ptr<SensorData> data)
 {
-	ReadLocking lock = lockRead();
+    ReadLock lock = lockRead();
 	_empty = false;
 	_lastUpdate = Clock::now();
     _data = std::move(data);
@@ -27,23 +27,23 @@ void SensorDataStorage::update(SensorData::Ptr data)
 
 bool SensorDataStorage::empty() const
 {
-	WriteLocking lock = lockWrite();
+    WriteLock lock = lockWrite();
 	return _empty;
 }
 
 SensorDataStorage::TimePoint SensorDataStorage::lastUpdate() const
 {
-	WriteLocking lock = lockWrite();
+    WriteLock lock = lockWrite();
 	return _lastUpdate;
 }
 
-SensorDataStorage::ReadLocking SensorDataStorage::lockRead() const
+SensorDataStorage::ReadLock SensorDataStorage::lockRead() const
 {
-	return ReadLocking(_mutex);
+    return ReadLock(_mutex);
 }
 
-SensorDataStorage::WriteLocking SensorDataStorage::lockWrite() const
+SensorDataStorage::WriteLock SensorDataStorage::lockWrite() const
 {
-	return WriteLocking(_mutex);
+    return WriteLock(_mutex);
 }
 

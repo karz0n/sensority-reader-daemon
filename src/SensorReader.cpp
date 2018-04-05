@@ -14,7 +14,10 @@
 
 using Poco::Util::Application;
 
-SensorReader::SensorReader(std::uint8_t p, SensorTypes t, SensorReadingStrategy::Ptr srs, SensorDataStorage::Ptr sts)
+SensorReader::SensorReader(std::uint8_t p,
+                           SensorTypes t,
+                           std::unique_ptr<SensorReadingStrategy> srs,
+                           std::shared_ptr<SensorDataStorage> sts)
     : _pin(p), _type(t), _strategy(std::move(srs)), _storage(sts), _runned(false)
 { }
 

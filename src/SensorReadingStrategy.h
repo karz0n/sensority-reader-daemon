@@ -19,8 +19,6 @@
  */
 class SensorReadingStrategy {
 public:
-	using Ptr = std::unique_ptr<SensorReadingStrategy>;
-
     virtual ~SensorReadingStrategy() = default;
 
     /**
@@ -60,7 +58,7 @@ public:
      * @param type device type.
      * @return The pointer of reading result.
      */
-    virtual SensorData::Ptr read(std::uint8_t pin, SensorTypes type) = 0;
+    virtual std::unique_ptr<SensorData> read(std::uint8_t pin, SensorTypes type) = 0;
 };
 
 #endif /* SENSORREADINGSTRATEGY_H_ */

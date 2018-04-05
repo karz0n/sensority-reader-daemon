@@ -21,12 +21,13 @@
  */
 class SensorReader {
 public:
-    using Ptr = std::unique_ptr<SensorReader>;
-
-    SensorReader(std::uint8_t pin, SensorTypes type, SensorReadingStrategy::Ptr strategy, SensorDataStorage::Ptr storage);
+    SensorReader(std::uint8_t pin,
+                 SensorTypes type,
+                 std::unique_ptr<SensorReadingStrategy> strategy,
+                 std::shared_ptr<SensorDataStorage> storage);
 
 	inline bool isRunned() const;
-    inline SensorDataStorage::Ptr storage() const;
+    inline std::shared_ptr<SensorDataStorage> storage() const;
 
 	void run();
 	void shutdown();
@@ -37,8 +38,8 @@ private:
 private:
     std::uint8_t _pin;
 	SensorTypes _type;
-	SensorReadingStrategy::Ptr _strategy;
-	SensorDataStorage::Ptr _storage;
+    std::unique_ptr<SensorReadingStrategy> _strategy;
+    std::shared_ptr<SensorDataStorage> _storage;
 	std::thread _thread;
     std::atomic<bool> _runned;
 };
@@ -52,7 +53,7 @@ bool SensorReader::isRunned() const
     return _runned;
 }
 
-SensorDataStorage::Ptr SensorReader::storage() const
+std::shared_ptr<SensorDataStorage> SensorReader::storage() const
 {
     return _storage;
 }

@@ -37,7 +37,7 @@ void TemperatureSensorReadingStrategy::pause(SensorTypes)
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
-SensorData::Ptr TemperatureSensorReadingStrategy::read(std::uint8_t pin, SensorTypes type)
+std::unique_ptr<SensorData> TemperatureSensorReadingStrategy::read(std::uint8_t pin, SensorTypes type)
 {
     bool isRoot = System::isRoot();
     if (isRoot) {
