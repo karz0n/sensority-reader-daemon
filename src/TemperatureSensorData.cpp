@@ -11,10 +11,10 @@ TemperatureSensorData::TemperatureSensorData(double t, double h)
 	: _temperature(t), _humidity(h)
 { }
 
-std::string TemperatureSensorData::format(const Formatter& formatter) const
+Formatter::Values TemperatureSensorData::values() const
 {
-	Formatter::Values values;
-	values.emplace(std::string("temperature"), Formatter::Value(_temperature));
-	values.emplace(std::string("humidity"), Formatter::Value(_humidity));
-	return formatter.format(values);
+    return {
+        {std::string("temperature"), Formatter::Value(_temperature)},
+        {std::string("humidity"), Formatter::Value(_humidity)}
+    };
 }

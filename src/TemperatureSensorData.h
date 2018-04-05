@@ -23,7 +23,7 @@ public:
     inline double getTemperature();
     inline double getHumidity();
 
-    std::string format(const Formatter& formatter) const override;
+    Formatter::Values values() const override;
 
 private:
     double _temperature;

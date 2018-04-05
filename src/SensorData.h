@@ -20,7 +20,27 @@ class SensorData: public SensorDataReadable {
 public:
     virtual ~SensorData() = default;
 
-    virtual std::string format(const Formatter& formatter) const = 0;
+    /**
+     * @brief format
+     * @param formatter
+     * @return
+     */
+    inline std::string format(const Formatter& formatter) const;
+
+    /**
+     * @brief values
+     * @return
+     */
+    virtual Formatter::Values values() const = 0;
 };
+
+//
+// Inlines
+//
+
+std::string SensorData::format(const Formatter& formatter) const
+{
+    return formatter.format(values());
+}
 
 #endif /* SENSORDATA_H_ */
