@@ -9,7 +9,9 @@ if(DEFINED ENV{ARM_DEPLOY_PATH})
     include("${PROJECT_SOURCE_DIR}/cmake/macros/deployment.cmake")
 endif()
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wpedantic -Wno-unknown-pragmas -Wno-psabi")
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
+
 find_package(Poco REQUIRED Util JSON XML Net Foundation)
 find_package(Bcm2835 REQUIRED)
 find_package(Threads REQUIRED)
