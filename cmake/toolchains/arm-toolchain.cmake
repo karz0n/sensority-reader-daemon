@@ -9,13 +9,11 @@ endif()
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
-set(CMAKE_SYSROOT "${ARM_SDK_PATH}/sysroot")
-set(CMAKE_STAGING_PREFIX "${ARM_SDK_PATH}/staging")
+set(CMAKE_C_COMPILER ${ARM_SDK_PATH}/prebuilt/bin/armv8-rpi3-linux-gnueabihf-gcc)
+set(CMAKE_CXX_COMPILER ${ARM_SDK_PATH}/prebuilt/bin/armv8-rpi3-linux-gnueabihf-g++)
 
-set(CMAKE_C_COMPILER "${ARM_SDK_PATH}/prebuilt/bin/armv8-rpi3-linux-gnueabihf-gcc")
-set(CMAKE_CXX_COMPILER "${ARM_SDK_PATH}/prebuilt/bin/armv8-rpi3-linux-gnueabihf-g++")
+set(CMAKE_FIND_ROOT_PATH ${ARM_SDK_PATH}/sysroot ${ARM_SDK_PATH}/staging)
 
-set(CMAKE_FIND_ROOT_PATH "${ARM_SDK_PATH}/staging")
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
