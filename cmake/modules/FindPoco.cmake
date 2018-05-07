@@ -69,9 +69,12 @@ if(NOT Poco_ROOT_DIR)
         message(STATUS "Looking for Poco install directory structure.")
         find_path(Poco_ROOT_DIR
             NAMES
-                "include/Poco/Poco.h"
+                "Poco.h"
             HINTS
-                ${Poco_HINTS})
+                ${Poco_HINTS}
+            PATH_SUFFIXES
+                "Poco"
+                "include/Poco")
         if(NOT Poco_ROOT_DIR)
             # poco was still not found -> Fail
             if(Poco_FIND_REQUIRED)
