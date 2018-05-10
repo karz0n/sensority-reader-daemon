@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.5)
 project(sensority-reader-daemon)
 
 if(DEFINED ENV{ARM_SDK_PATH})
@@ -6,10 +6,9 @@ if(DEFINED ENV{ARM_SDK_PATH})
 endif()
 
 if(DEFINED ENV{ARM_DEPLOY_PATH})
-    include("${PROJECT_SOURCE_DIR}/cmake/macros/deployment.cmake")
+    include("${PROJECT_SOURCE_DIR}/cmake/macros/arm-deployment.cmake")
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wpedantic -Wno-unknown-pragmas -Wno-psabi")
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
 
 find_package(Poco REQUIRED Util JSON XML Net Foundation)
@@ -30,7 +29,5 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 target_link_libraries(${PROJECT_NAME}
     ${CMAKE_THREAD_LIBS_INIT}
-    ${Poco_LIBRARIES}
     ${Bcm2835_LIBRARIES}
-    -static-libgcc -static-libstdc++)
-
+    ${Poco_LIBRARIES})
