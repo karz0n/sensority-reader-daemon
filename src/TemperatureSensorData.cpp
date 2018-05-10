@@ -13,8 +13,8 @@ TemperatureSensorData::TemperatureSensorData(double t, double h)
 
 Formatter::Values TemperatureSensorData::values() const
 {
-    return {
-        {std::string("temperature"), Formatter::Value(_temperature)},
-        {std::string("humidity"), Formatter::Value(_humidity)}
-    };
+    Formatter::Values values;
+    values.emplace(std::make_pair("temperature", _temperature));
+    values.emplace(std::make_pair("humidity", _humidity));
+    return values;
 }
