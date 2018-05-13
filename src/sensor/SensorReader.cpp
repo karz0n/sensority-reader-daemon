@@ -12,14 +12,17 @@
 #include <Poco/Exception.h>
 #include <Poco/Util/Application.h>
 
+#include "sensor/SensorDataStorage.hpp"
+#include "sensor/SensorReadingStrategyFactory.hpp"
+
 using Poco::Util::Application;
 
-SensorReader::SensorReader(std::uint8_t p,
-                           SensorTypes t,
-                           std::unique_ptr<SensorReadingStrategy> srs,
-                           std::shared_ptr<SensorDataStorage> sts)
-    : _pin(p), _type(t), _strategy(std::move(srs)), _storage(sts), _runned(false)
-{ }
+SensorReader::SensorReader(std::uint8_t p, SensorTypes t)
+    : _pin(p), _type(t), _runned(false)
+{
+    _strategy = SensorReadingStrategyFactory::createReadingStrategy(t);
+    _storage = std::make_shared<SensorDataStorage>();
+}
 
 void SensorReader::run()
 {

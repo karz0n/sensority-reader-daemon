@@ -18,8 +18,6 @@
 
 #include "sensor/SensorCommon.hpp"
 #include "sensor/SensorReader.hpp"
-#include "sensor/SensorDataStorage.hpp"
-#include "sensor/SensorReadingStrategyFactory.hpp"
 
 #include "http/HttpSensorReaderServer.hpp"
 
@@ -119,13 +117,7 @@ int SensorReaderApplication::main(const std::vector<std::string>&)
         return ServerApplication::EXIT_OK;
     }
 
-    SensorTypes type = getDeviceType();
-    SensorReader reader(
-                getDevicePin(),
-                type,
-                getDeviceReadingStrategy(type),
-                std::make_shared<SensorDataStorage>());
-
+    SensorReader reader(getDevicePin(), getDeviceType());
     reader.run();
 
     HttpSensorReaderServer server(getServerPort(), reader.storage());
@@ -134,7 +126,6 @@ int SensorReaderApplication::main(const std::vector<std::string>&)
     server.shutdown();
 
     reader.shutdown();
-
     return Application::EXIT_OK;
 }
 
@@ -164,11 +155,3 @@ SensorTypes SensorReaderApplication::getDeviceType() const
     return translateSensorTypeFromString(
                 config().getString("reader.deviceType", DEFAULT_DEVICE_TYPE));
 }
-
-std::unique_ptr<SensorReadingStrategy> SensorReaderApplication::getDeviceReadingStrategy(SensorTypes deviceType) const
-{
-    return SensorReadingStrategyFactory::createReadingStrategy(deviceType);
-}
-
-
-

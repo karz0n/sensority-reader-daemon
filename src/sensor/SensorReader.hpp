@@ -21,10 +21,7 @@
  */
 class SensorReader {
 public:
-    SensorReader(std::uint8_t pin,
-                 SensorTypes type,
-                 std::unique_ptr<SensorReadingStrategy> strategy,
-                 std::shared_ptr<SensorDataStorage> storage);
+    SensorReader(std::uint8_t pin, SensorTypes type);
 
 	inline bool isRunned() const;
     inline std::shared_ptr<SensorDataStorage> storage() const;
