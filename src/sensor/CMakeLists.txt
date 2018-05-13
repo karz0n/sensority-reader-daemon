@@ -1,0 +1,23 @@
+target_sources(${PROJECT_NAME}
+    PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorCommon.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorCommon.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorDataReadable.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorData.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorDataStorage.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorDataStorage.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReader.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReader.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReaderServer.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReaderServer.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReadingStrategy.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReadingStrategyFactory.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReadingStrategyFactory.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/TemperatureSensorData.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/TemperatureSensorData.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/TemperatureSensorReadingStrategy.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/TemperatureSensorReadingStrategy.hpp")
+
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}")

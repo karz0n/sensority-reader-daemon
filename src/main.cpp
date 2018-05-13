@@ -5,7 +5,7 @@
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#include "SensorReaderApplication.h"
+#include "SensorReaderApplication.hpp"
 
 int main(int argc, char** argv)
 {

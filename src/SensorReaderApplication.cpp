@@ -5,7 +5,7 @@
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#include "SensorReaderApplication.h"
+#include "SensorReaderApplication.hpp"
 
 #include <iostream>
 
@@ -14,12 +14,12 @@
 #include <Poco/Util/OptionCallback.h>
 #include <Poco/Util/HelpFormatter.h>
 
-#include "SensorCommon.h"
-#include "SensorReader.h"
-#include "SensorDataStorage.h"
-#include "SensorReadingStrategyFactory.h"
+#include "sensor/SensorCommon.hpp"
+#include "sensor/SensorReader.hpp"
+#include "sensor/SensorDataStorage.hpp"
+#include "sensor/SensorReadingStrategyFactory.hpp"
 
-#include "HttpSensorReaderServer.h"
+#include "http/HttpSensorReaderServer.hpp"
 
 using Poco::Util::Application;
 using Poco::Util::OptionSet;
