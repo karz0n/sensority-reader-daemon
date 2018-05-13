@@ -7,40 +7,45 @@
 
 #include "SensorReaderApplication.hpp"
 
+#include "sensor/SensorReader.hpp"
+#include "http/HttpSensorReaderServer.hpp"
+
+#include <string>
 #include <iostream>
 #include <exception>
 
+#include <Poco/NumberParser.h>
 #include <Poco/Exception.h>
+#include <Poco/Util/Validator.h>
+#include <Poco/Util/IntValidator.h>
+#include <Poco/Util/RegExpValidator.h>
 #include <Poco/Util/Option.h>
-#include <Poco/Util/OptionSet.h>
 #include <Poco/Util/OptionCallback.h>
 #include <Poco/Util/HelpFormatter.h>
 
-#include "sensor/SensorCommon.hpp"
-#include "sensor/SensorReader.hpp"
-
-#include "http/HttpSensorReaderServer.hpp"
-
+using Poco::Util::Validator;
 using Poco::Util::Application;
 using Poco::Util::OptionSet;
 using Poco::Util::Option;
 using Poco::Util::OptionCallback;
 using Poco::Util::HelpFormatter;
+using Poco::Util::IntValidator;
+using Poco::Util::RegExpValidator;
 
 /**
  * @brief Default server port
  */
-static const int DEFAULT_SERVER_PORT = 8080;
+static const std::string DEFAULT_SERVER_PORT {"8080"};
 
 /**
  * @brief Default device pin value
  */
-static const int DEFAULT_DEVICE_PIN = 22;
+static const std::string DEFAULT_DEVICE_PIN {"22"};
 
 /**
  * @brief Default device type value
  */
-static const std::string DEFAULT_DEVICE_TYPE = std::string("DHT22");
+static const std::string DEFAULT_DEVICE_TYPE {"DHT22"};
 
 SensorReaderApplication::SensorReaderApplication()
 	: _helpRequested(false)
@@ -77,24 +82,27 @@ void SensorReaderApplication::defineOptions(OptionSet& options)
                 OptionCallback<SensorReaderApplication>(this, &SensorReaderApplication::handleHelp)));
 
     options.addOption(
-        Option("port", "p", "Set HTTP server port")
+        Option("port", "p", "Set HTTP server port. Valid value is a number from 1024 to 65535.")
             .required(false)
             .repeatable(false)
             .argument("value")
+            .validator(new IntValidator(1024, 65535))
             .binding("server.port"));
 
     options.addOption(
-        Option("devicePin", "", "Set reader device pin")
+        Option("devicePin", "s", "Set reader device pin")
             .required(false)
             .repeatable(false)
             .argument("value")
+            .validator(new IntValidator(0, 31))
             .binding("reader.devicePin"));
 
     options.addOption(
-        Option("deviceType", "", "Set reader device type")
+        Option("deviceType", "t", "Set reader device type")
             .required(false)
             .repeatable(false)
             .argument("value")
+            .validator(new RegExpValidator("(?i)dht(11|22)"))
             .binding("reader.deviceType"));
 }
 
@@ -152,18 +160,39 @@ void SensorReaderApplication::displayHelp()
 
 unsigned short SensorReaderApplication::getServerPort() const
 {
-    return static_cast<unsigned short>(
-                config().getUInt("server.port", DEFAULT_SERVER_PORT));
+    const Option& option = options().getOption("port");
+
+    Validator* validator = option.validator();
+    poco_check_ptr(validator);
+
+    std::string value = config().getString(option.binding(), DEFAULT_SERVER_PORT);
+    validator->validate(option, value);
+
+    return static_cast<unsigned short>(Poco::NumberParser::parseUnsigned(value));
 }
 
 std::uint8_t SensorReaderApplication::getDevicePin() const
 {
-    return static_cast<std::uint8_t>(
-                config().getUInt("reader.devicePin", DEFAULT_DEVICE_PIN));
+    const Option& option = options().getOption("devicePin");
+
+    Validator* validator = option.validator();
+    poco_check_ptr(validator);
+
+    std::string value = config().getString(option.binding(), DEFAULT_DEVICE_PIN);
+    validator->validate(option, value);
+
+    return static_cast<std::uint8_t>(Poco::NumberParser::parseUnsigned(value));
 }
 
 SensorTypes SensorReaderApplication::getDeviceType() const
 {
-    return translateSensorTypeFromString(
-                config().getString("reader.deviceType", DEFAULT_DEVICE_TYPE));
+    const Option& option = options().getOption("devicePin");
+
+    Validator* validator = option.validator();
+    poco_check_ptr(validator);
+
+    std::string value = config().getString(option.binding(), DEFAULT_DEVICE_TYPE);
+    validator->validate(option, value);
+
+    return translateSensorTypeFromString(value);
 }

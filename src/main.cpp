@@ -5,10 +5,8 @@
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
+#include <iostream>
+
 #include "SensorReaderApplication.hpp"
 
-int main(int argc, char** argv)
-{
-    SensorReaderApplication app;
-    return app.run(argc, argv);
-}
+POCO_SERVER_MAIN(SensorReaderApplication)

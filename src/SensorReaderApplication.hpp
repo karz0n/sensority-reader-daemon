@@ -10,17 +10,13 @@
 
 #include <cstdint>
 
-#include <string>
-#include <vector>
-#include <memory>
-
-#include <Poco/Util/OptionSet.h>
-#include <Poco/Util/Application.h>
 #include <Poco/Util/ServerApplication.h>
 
-#include "SensorCommon.hpp"
-#include "SensorReadingStrategy.hpp"
+#include "sensor/SensorCommon.hpp"
 
+/**
+ * @brief The SensorReaderApplication class
+ */
 class SensorReaderApplication: public Poco::Util::ServerApplication {
 public:
 	SensorReaderApplication();
@@ -43,7 +39,6 @@ private:
     unsigned short getServerPort() const;
     std::uint8_t getDevicePin() const;
     SensorTypes getDeviceType() const;
-    std::unique_ptr<SensorReadingStrategy> getDeviceReadingStrategy(SensorTypes deviceType) const;
 
 private:
 	bool _helpRequested;
