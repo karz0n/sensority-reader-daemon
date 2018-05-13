@@ -141,7 +141,7 @@ int SensorReaderApplication::main(const std::vector<std::string>&)
         server.shutdown();
         reader.shutdown();
     } catch (const Poco::Exception& e) {
-        logger().error(e.message());
+        logger().error(e.displayText());
         return Application::EXIT_SOFTWARE;
     } catch (const std::exception& e) {
         logger().error(e.what());

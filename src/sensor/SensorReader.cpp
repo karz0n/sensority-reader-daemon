@@ -55,7 +55,7 @@ void SensorReader::handler()
         }
         catch (const Poco::Exception& e) {
             Application& app = Application::instance();
-            app.logger().error(e.message());
+            app.logger().error(e.displayText());
         }
         catch (const std::exception& e) {
             Application& app = Application::instance();
