@@ -8,8 +8,6 @@ target_sources(${PROJECT_NAME}
         "${CMAKE_CURRENT_SOURCE_DIR}/SensorDataStorage.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/SensorReader.hpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/SensorReader.cpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReaderServer.hpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReaderServer.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/SensorReadingStrategy.hpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/SensorReadingStrategyFactory.hpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/SensorReadingStrategyFactory.cpp"
