@@ -12,27 +12,31 @@
 
 #include <Poco/Net/HTTPServer.h>
 
-#include "formatter/Formatter.hpp"
-#include "sensor/SensorReaderServer.hpp"
-#include "sensor/SensorReader.hpp"
+#include <formatter/Formatter.hpp>
+#include "sensor/SensorDataReadable.hpp"
 
 /**
  * @brief The HttpSensorReaderServer class
  */
-class HttpSensorReaderServer: public SensorReaderServer {
+class HttpSensorReaderServer {
 public:
-    HttpSensorReaderServer(std::unique_ptr<SensorReader> reader, unsigned short port);
-    ~HttpSensorReaderServer() override;
+    HttpSensorReaderServer(
+            unsigned short port,
+            std::shared_ptr<SensorDataReadable> data);
+    ~HttpSensorReaderServer();
 
+    bool isRunned() const;
+    void run();
+    void shutdown();
+
+private:
+    std::shared_ptr<Formatter> createFormatter();
+
+private:
     HttpSensorReaderServer(const HttpSensorReaderServer&) = delete;
     HttpSensorReaderServer& operator=(const HttpSensorReaderServer&) = delete;
 
-    bool isRunned() const override;
-    void run() override;
-	void shutdown() override;
-
 private:
-    std::unique_ptr<Formatter> _formatter;
     std::unique_ptr<Poco::Net::HTTPServer> _server;
     bool _runned;
 };

@@ -8,6 +8,8 @@
 #ifndef SENSORREADERAPPLICATION_H_
 #define SENSORREADERAPPLICATION_H_
 
+#include <cstdint>
+
 #include <string>
 #include <vector>
 #include <memory>
@@ -39,7 +41,7 @@ protected:
 private:
     void displayHelp();
     unsigned short getServerPort() const;
-    unsigned int getDevicePin() const;
+    std::uint8_t getDevicePin() const;
     SensorTypes getDeviceType() const;
     std::unique_ptr<SensorReadingStrategy> getDeviceReadingStrategy(SensorTypes deviceType) const;
 

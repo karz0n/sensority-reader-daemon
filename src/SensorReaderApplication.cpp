@@ -8,7 +8,9 @@
 #include "SensorReaderApplication.hpp"
 
 #include <iostream>
+#include <exception>
 
+#include <Poco/Exception.h>
 #include <Poco/Util/Option.h>
 #include <Poco/Util/OptionSet.h>
 #include <Poco/Util/OptionCallback.h>
@@ -117,22 +119,21 @@ int SensorReaderApplication::main(const std::vector<std::string>&)
         return ServerApplication::EXIT_OK;
     }
 
-    unsigned short port = getServerPort();
-
-    unsigned int pin = getDevicePin();
     SensorTypes type = getDeviceType();
-    auto strategy = getDeviceReadingStrategy(type);
+    SensorReader reader(
+                getDevicePin(),
+                type,
+                getDeviceReadingStrategy(type),
+                std::make_shared<SensorDataStorage>());
 
-    auto reader = std::make_unique<SensorReader>(
-                      pin,
-                      type,
-                      std::move(strategy),
-                      std::make_shared<SensorDataStorage>());
+    reader.run();
 
-    HttpSensorReaderServer server(std::move(reader), port);
+    HttpSensorReaderServer server(getServerPort(), reader.storage());
     server.run();
     waitForTerminationRequest();
     server.shutdown();
+
+    reader.shutdown();
 
     return Application::EXIT_OK;
 }
@@ -152,15 +153,16 @@ unsigned short SensorReaderApplication::getServerPort() const
                 config().getUInt("server.port", DEFAULT_SERVER_PORT));
 }
 
-unsigned int SensorReaderApplication::getDevicePin() const
+std::uint8_t SensorReaderApplication::getDevicePin() const
 {
-    return config().getUInt("reader.devicePin", DEFAULT_DEVICE_PIN);
+    return static_cast<std::uint8_t>(
+                config().getUInt("reader.devicePin", DEFAULT_DEVICE_PIN));
 }
 
 SensorTypes SensorReaderApplication::getDeviceType() const
 {
-    std::string value = config().getString("reader.deviceType", DEFAULT_DEVICE_TYPE);
-    return translateSensorTypeFromString(value);
+    return translateSensorTypeFromString(
+                config().getString("reader.deviceType", DEFAULT_DEVICE_TYPE));
 }
 
 std::unique_ptr<SensorReadingStrategy> SensorReaderApplication::getDeviceReadingStrategy(SensorTypes deviceType) const

@@ -8,24 +8,28 @@
 #ifndef HTTPSENSORREADERREQUESTHANDLERFACTORY_H_
 #define HTTPSENSORREADERREQUESTHANDLERFACTORY_H_
 
+#include <memory>
+
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPRequestHandlerFactory.h>
 
 #include "formatter/Formatter.hpp"
-#include "sensor/SensorDataStorage.hpp"
+#include "sensor/SensorDataReadable.hpp"
 
 /**
  * @brief The HttpSensorReaderRequestHandlerFactory class
  */
 class HttpSensorReaderRequestHandlerFactory: public Poco::Net::HTTPRequestHandlerFactory {
 public:
-    HttpSensorReaderRequestHandlerFactory(const SensorDataStorage& storage, const Formatter& formatter);
+    HttpSensorReaderRequestHandlerFactory(
+            std::shared_ptr<SensorDataReadable> data,
+            std::shared_ptr<Formatter> formatter);
 
     Poco::Net::HTTPRequestHandler* createRequestHandler(const Poco::Net::HTTPServerRequest& request);
 
 private:
-    const SensorDataStorage& _storage;
-    const Formatter& _formatter;
+    std::shared_ptr<SensorDataReadable> _data;
+    std::shared_ptr<Formatter> _formatter;
 };
 
 #endif /* HTTPSENSORREADERREQUESTHANDLERFACTORY_H_ */

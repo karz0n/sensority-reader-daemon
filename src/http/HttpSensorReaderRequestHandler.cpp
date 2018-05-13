@@ -15,24 +15,27 @@ using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
 
 HttpSensorReaderRequestHandler::HttpSensorReaderRequestHandler(
-        const SensorDataStorage& s,
+        const SensorDataReadable& d,
         const Formatter& f)
-    : _storage(s), _formatter(f)
+    : _data(d), _formatter(f)
 { }
 
 void HttpSensorReaderRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
 {
 #ifndef NDEBUG
     using Poco::Util::Application;
-    Application& app = Application::instance();
-    app.logger()
-       .information("Request from " + request.clientAddress().toString());
+    Application::instance()
+            .logger()
+            .information("Request from " + request.clientAddress().toString());
 #endif
+
+    // TODO: Make independent setting of conent type
+    //       from type of formatter
 
     response.setChunkedTransferEncoding(true);
     response.setContentType("application/json");
 
-    std::ostream& os = response.send();
-    os << _storage.format(_formatter);
+    auto& os = response.send();
+    os << _data.format(_formatter);
 }
 

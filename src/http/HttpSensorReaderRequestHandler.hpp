@@ -13,19 +13,23 @@
 #include <Poco/Net/HTTPRequestHandler.h>
 
 #include "formatter/Formatter.hpp"
-#include "sensor/SensorDataStorage.hpp"
+#include "sensor/SensorDataReadable.hpp"
 
 /**
  * @brief The HttpSensorReaderRequestHandler class
  */
 class HttpSensorReaderRequestHandler: public Poco::Net::HTTPRequestHandler {
 public:
-    HttpSensorReaderRequestHandler(const SensorDataStorage& storage, const Formatter& formatter);
+    HttpSensorReaderRequestHandler(
+            const SensorDataReadable& storage,
+            const Formatter& formatter);
 
-    void handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse& response);
+    void handleRequest(
+            Poco::Net::HTTPServerRequest& request,
+            Poco::Net::HTTPServerResponse& response);
 
 private:
-    const SensorDataStorage& _storage;
+    const SensorDataReadable& _data;
     const Formatter& _formatter;
 };
 

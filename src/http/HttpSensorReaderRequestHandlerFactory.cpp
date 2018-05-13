@@ -12,18 +12,17 @@ using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPServerRequest;
 
 HttpSensorReaderRequestHandlerFactory::HttpSensorReaderRequestHandlerFactory(
-        const SensorDataStorage& s,
-        const Formatter& f)
-    : _storage(s), _formatter(f)
+        std::shared_ptr<SensorDataReadable> d,
+        std::shared_ptr<Formatter> f)
+    : _data(d), _formatter(f)
 { }
 
 HTTPRequestHandler* HttpSensorReaderRequestHandlerFactory::createRequestHandler(const HTTPServerRequest& request)
 {
     if (request.getURI() == "/") {
-        return new HttpSensorReaderRequestHandler(_storage, _formatter);
+        return new HttpSensorReaderRequestHandler(*_data, *_formatter);
     }
     else {
         return nullptr;
     }
 }
-
