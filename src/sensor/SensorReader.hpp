@@ -22,10 +22,11 @@
 class SensorReader {
 public:
     SensorReader(std::uint8_t pin, SensorTypes type);
+    virtual ~SensorReader();
 
-	inline bool isRunned() const;
     inline std::shared_ptr<SensorDataStorage> storage() const;
 
+    inline bool isRunned() const;
 	void run();
 	void shutdown();
 

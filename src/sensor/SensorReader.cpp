@@ -24,6 +24,13 @@ SensorReader::SensorReader(std::uint8_t p, SensorTypes t)
     _storage = std::make_shared<SensorDataStorage>();
 }
 
+SensorReader::~SensorReader()
+{
+    if (isRunned()) {
+        shutdown();
+    }
+}
+
 void SensorReader::run()
 {
     _runned = true;
@@ -33,7 +40,9 @@ void SensorReader::run()
 void SensorReader::shutdown()
 {
     _runned = false;
-	_thread.join();
+    if (_thread.joinable()) {
+        _thread.join();
+    }
 }
 
 void SensorReader::handler()

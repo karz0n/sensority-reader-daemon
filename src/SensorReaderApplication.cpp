@@ -126,14 +126,19 @@ int SensorReaderApplication::main(const std::vector<std::string>&)
     }
 
     try {
-        SensorReader reader(getDevicePin(), getDeviceType());
+        std::uint8_t devicePin = getDevicePin();
+        SensorTypes deviceType = getDeviceType();
+        SensorReader reader(devicePin, deviceType);
+
+        unsigned short port = getServerPort();
+        HttpSensorReaderServer server(port, reader.storage());
+
         reader.run();
-
-        HttpSensorReaderServer server(getServerPort(), reader.storage());
         server.run();
-        waitForTerminationRequest();
-        server.shutdown();
 
+        waitForTerminationRequest();
+
+        server.shutdown();
         reader.shutdown();
     } catch (const Poco::Exception& e) {
         logger().error(e.message());
@@ -186,7 +191,7 @@ std::uint8_t SensorReaderApplication::getDevicePin() const
 
 SensorTypes SensorReaderApplication::getDeviceType() const
 {
-    const Option& option = options().getOption("devicePin");
+    const Option& option = options().getOption("deviceType");
 
     Validator* validator = option.validator();
     poco_check_ptr(validator);
