@@ -117,15 +117,27 @@ int SensorReaderApplication::main(const std::vector<std::string>&)
         return ServerApplication::EXIT_OK;
     }
 
-    SensorReader reader(getDevicePin(), getDeviceType());
-    reader.run();
+    try {
+        SensorReader reader(getDevicePin(), getDeviceType());
+        reader.run();
 
-    HttpSensorReaderServer server(getServerPort(), reader.storage());
-    server.run();
-    waitForTerminationRequest();
-    server.shutdown();
+        HttpSensorReaderServer server(getServerPort(), reader.storage());
+        server.run();
+        waitForTerminationRequest();
+        server.shutdown();
 
-    reader.shutdown();
+        reader.shutdown();
+    } catch (const Poco::Exception& e) {
+        logger().error(e.message());
+        return Application::EXIT_SOFTWARE;
+    } catch (const std::exception& e) {
+        logger().error(e.what());
+        return Application::EXIT_SOFTWARE;
+    } catch (...) {
+        logger().error("Unknown error");
+        return Application::EXIT_SOFTWARE;
+    }
+
     return Application::EXIT_OK;
 }
 
