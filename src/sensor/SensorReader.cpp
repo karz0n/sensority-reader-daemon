@@ -32,8 +32,8 @@ void SensorReader::run()
 
 void SensorReader::shutdown()
 {
-	_thread.join();
     _runned = false;
+	_thread.join();
 }
 
 void SensorReader::handler()
