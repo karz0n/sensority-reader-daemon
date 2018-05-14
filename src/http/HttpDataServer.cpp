@@ -5,8 +5,8 @@
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#include "HttpSensorReaderServer.hpp"
-#include "HttpSensorReaderRequestHandlerFactory.hpp"
+#include "HttpDataServer.hpp"
+#include "HttpDataRequestHandlerFactory.hpp"
 
 #include "formatter/JsonFormatter.hpp"
 
@@ -15,46 +15,41 @@
 using Poco::Net::HTTPServerParams;
 using Poco::Net::HTTPServer;
 
-HttpSensorReaderServer::HttpSensorReaderServer(
+HttpDataServer::HttpDataServer(
         unsigned short p,
         std::shared_ptr<SensorDataReadable> d)
     : _runned(false)
 {
     _server = std::make_unique<HTTPServer>(
-        new HttpSensorReaderRequestHandlerFactory(d, createFormatter()),
+        new HttpDataRequestHandlerFactory(d, getFormatter()),
         p,
         new HTTPServerParams);
 }
 
-HttpSensorReaderServer::~HttpSensorReaderServer()
+HttpDataServer::~HttpDataServer()
 {
-    if (_runned) {
+    if (isRunned()) {
         _server->stopAll(true);
     }
 }
 
-bool HttpSensorReaderServer::isRunned() const
+void HttpDataServer::run()
 {
-    return _runned;
-}
-
-void HttpSensorReaderServer::run()
-{
-    poco_assert(!_runned);
+    poco_assert_msg(!isRunned(), "Http server has already been run");
 
     _runned = true;
     _server->start();
 }
 
-void HttpSensorReaderServer::shutdown()
+void HttpDataServer::shutdown()
 {
-    poco_assert(_runned);
+    poco_assert_msg(isRunned(), "Http server has already been stopped");
 
     _server->stopAll(true);
     _runned = false;
 }
 
-std::shared_ptr<Formatter> HttpSensorReaderServer::createFormatter()
+std::shared_ptr<Formatter> HttpDataServer::getFormatter()
 {
     return std::make_shared<JsonFormatter>();
 }

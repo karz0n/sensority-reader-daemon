@@ -1,11 +1,11 @@
 /*
- * HttpSensorReaderRequestHandler.cpp
+ * HttpDataRequestHandler.cpp
  *
  *  Created on: Mar 22, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#include "HttpSensorReaderRequestHandler.hpp"
+#include "HttpDataRequestHandler.hpp"
 
 #ifndef NDEBUG
 #include <Poco/Util/Application.h>
@@ -14,13 +14,13 @@
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
 
-HttpSensorReaderRequestHandler::HttpSensorReaderRequestHandler(
+HttpDataRequestHandler::HttpDataRequestHandler(
         const SensorDataReadable& d,
         const Formatter& f)
     : _data(d), _formatter(f)
 { }
 
-void HttpSensorReaderRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
+void HttpDataRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
 {
 #ifndef NDEBUG
     using Poco::Util::Application;
@@ -29,11 +29,18 @@ void HttpSensorReaderRequestHandler::handleRequest(HTTPServerRequest& request, H
             .information("Request from " + request.clientAddress().toString());
 #endif
 
-    // TODO: Make independent setting of conent type
-    //       from type of formatter
-
     response.setChunkedTransferEncoding(true);
-    response.setContentType("application/json");
+
+    switch (_formatter.type()) {
+    case Formats::text:
+        response.setContentType("text/plain");
+        break;
+    case Formats::json:
+        response.setContentType("application/json");
+        break;
+    default:
+        response.setContentType("text/plain");
+    }
 
     auto& os = response.send();
     os << _data.format(_formatter);

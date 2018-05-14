@@ -1,12 +1,12 @@
 /*
- * HttpSensorReaderRequestHandler.h
+ * HttpDataRequestHandler.h
  *
  *  Created on: Mar 22, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#ifndef HTTPSENSORREADERREQUESTHANDLER_H_
-#define HTTPSENSORREADERREQUESTHANDLER_H_
+#ifndef HTTPDATAREQUESTHANDLER_HPP_
+#define HTTPDATAREQUESTHANDLER_HPP_
 
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
@@ -16,11 +16,11 @@
 #include "sensor/SensorDataReadable.hpp"
 
 /**
- * @brief The HttpSensorReaderRequestHandler class
+ * @brief The HttpDataRequestHandler class
  */
-class HttpSensorReaderRequestHandler: public Poco::Net::HTTPRequestHandler {
+class HttpDataRequestHandler: public Poco::Net::HTTPRequestHandler {
 public:
-    HttpSensorReaderRequestHandler(
+    HttpDataRequestHandler(
             const SensorDataReadable& storage,
             const Formatter& formatter);
 
@@ -33,4 +33,4 @@ private:
     const Formatter& _formatter;
 };
 
-#endif /* HTTPSENSORREADERREQUESTHANDLER_H_ */
+#endif /* HTTPDATAREQUESTHANDLER_HPP_ */

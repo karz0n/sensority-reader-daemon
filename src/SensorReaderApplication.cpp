@@ -8,7 +8,7 @@
 #include "SensorReaderApplication.hpp"
 
 #include "sensor/SensorReader.hpp"
-#include "http/HttpSensorReaderServer.hpp"
+#include "http/HttpDataServer.hpp"
 
 #include <string>
 #include <iostream>
@@ -131,7 +131,7 @@ int SensorReaderApplication::main(const std::vector<std::string>&)
         SensorReader reader(devicePin, deviceType);
 
         unsigned short port = getServerPort();
-        HttpSensorReaderServer server(port, reader.storage());
+        HttpDataServer server(port, reader.storage());
 
         reader.run();
         server.run();
