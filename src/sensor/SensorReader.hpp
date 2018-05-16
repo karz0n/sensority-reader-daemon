@@ -1,12 +1,12 @@
 /*
- * SensorReader.h
+ * SensorReader.hpp
  *
  *  Created on: Feb 28, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#ifndef SENSORREADER_H_
-#define SENSORREADER_H_
+#ifndef SENSORREADER_HPP_
+#define SENSORREADER_HPP_
 
 #include <thread>
 #include <atomic>
@@ -56,4 +56,4 @@ std::shared_ptr<SensorDataStorage> SensorReader::storage() const
     return _storage;
 }
 
-#endif /* SENSORREADER_H_ */
+#endif /* SENSORREADER_HPP_ */

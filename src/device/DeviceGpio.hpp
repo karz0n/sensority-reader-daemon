@@ -1,12 +1,12 @@
 /*
- * DeviceGpio.h
+ * DeviceGpio.hpp
  *
  *  Created on: Mar 4, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#ifndef DEVICEGPIO_H_
-#define DEVICEGPIO_H_
+#ifndef DEVICEGPIO_HPP_
+#define DEVICEGPIO_HPP_
 
 #include <cstdint>
 #include <limits>
@@ -33,4 +33,4 @@ private:
     std::uint8_t _pin;
 };
 
-#endif /* DEVICEGPIO_H_ */
+#endif /* DEVICEGPIO_HPP_ */

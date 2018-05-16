@@ -17,7 +17,7 @@ using Poco::Net::HTTPServer;
 
 HttpDataServer::HttpDataServer(
         unsigned short p,
-        std::shared_ptr<SensorDataReadable> d)
+        std::shared_ptr<SensorReadableData> d)
     : _runned(false)
 {
     _server = std::make_unique<HTTPServer>(
@@ -29,7 +29,7 @@ HttpDataServer::HttpDataServer(
 HttpDataServer::~HttpDataServer()
 {
     if (isRunned()) {
-        _server->stopAll(true);
+        shutdown();
     }
 }
 
@@ -37,8 +37,8 @@ void HttpDataServer::run()
 {
     poco_assert_msg(!isRunned(), "Http server has already been run");
 
-    _runned = true;
     _server->start();
+    _runned = true;
 }
 
 void HttpDataServer::shutdown()

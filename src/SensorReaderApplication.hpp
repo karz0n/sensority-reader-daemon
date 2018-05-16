@@ -1,12 +1,12 @@
 /*
- * SensorReaderApplication.h
+ * SensorReaderApplication.hpp
  *
  *  Created on: Mar 22, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#ifndef SENSORREADERAPPLICATION_H_
-#define SENSORREADERAPPLICATION_H_
+#ifndef SENSORREADERAPPLICATION_HPP_
+#define SENSORREADERAPPLICATION_HPP_
 
 #include <cstdint>
 
@@ -44,4 +44,4 @@ private:
 	bool _helpRequested;
 };
 
-#endif /* SENSORREADERAPPLICATION_H_ */
+#endif /* SENSORREADERAPPLICATION_HPP_ */

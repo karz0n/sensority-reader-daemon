@@ -1,12 +1,12 @@
 /*
- * DeviceManager.h
+ * DeviceManager.hpp
  *
  *  Created on: Mar 4, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#ifndef DEVICEMANAGER_H_
-#define DEVICEMANAGER_H_
+#ifndef DEVICEMANAGER_HPP_
+#define DEVICEMANAGER_HPP_
 
 #include <cstdint>
 
@@ -44,4 +44,4 @@ bool DeviceManager::isInitialized() const
 	return _initialized;
 }
 
-#endif /* DEVICEMANAGER_H_ */
+#endif /* DEVICEMANAGER_HPP_ */

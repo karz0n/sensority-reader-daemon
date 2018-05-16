@@ -15,7 +15,7 @@ using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
 
 HttpDataRequestHandler::HttpDataRequestHandler(
-        const SensorDataReadable& d,
+        const SensorReadableData& d,
         const Formatter& f)
     : _data(d), _formatter(f)
 { }

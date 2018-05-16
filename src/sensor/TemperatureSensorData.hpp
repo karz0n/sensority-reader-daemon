@@ -1,12 +1,12 @@
 /*
- * TemperatureSensorData.h
+ * TemperatureSensorData.hpp
  *
  *  Created on: Feb 21, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#ifndef TEMPERATURESENSORDATA_H_
-#define TEMPERATURESENSORDATA_H_
+#ifndef TEMPERATURESENSORDATA_HPP_
+#define TEMPERATURESENSORDATA_HPP_
 
 #include <string>
 
@@ -44,4 +44,4 @@ double TemperatureSensorData::getHumidity()
 	return _humidity;
 }
 
-#endif /* TEMPERATURESENSORDATA_H_ */
+#endif /* TEMPERATURESENSORDATA_HPP_ */

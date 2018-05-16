@@ -1,12 +1,12 @@
 /*
- * SensorReadingStrategyFactory.h
+ * SensorReadingStrategyFactory.hpp
  *
  *  Created on: Feb 21, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#ifndef SENSORREADINGSTRATEGYFACTORY_H
-#define SENSORREADINGSTRATEGYFACTORY_H
+#ifndef SENSORREADINGSTRATEGYFACTORY_HPP_
+#define SENSORREADINGSTRATEGYFACTORY_HPP_
 
 #include <memory>
 
@@ -24,4 +24,4 @@ public:
     static std::unique_ptr<SensorReadingStrategy> createTemperatureReadingStrategy();
 };
 
-#endif // SENSORREADINGSTRATEGYFACTORY_H
+#endif // SENSORREADINGSTRATEGYFACTORY_HPP_

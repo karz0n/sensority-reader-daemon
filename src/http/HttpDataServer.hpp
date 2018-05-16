@@ -1,5 +1,5 @@
 /*
- * HttpSensorReaderServer.h
+ * HttpSensorReaderServer.hpp
  *
  *  Created on: Feb 21, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
@@ -12,9 +12,9 @@
 
 #include <Poco/Net/HTTPServer.h>
 
-#include <common/Runnable.hpp>
-#include <formatter/Formatter.hpp>
-#include "sensor/SensorDataReadable.hpp"
+#include "common/Runnable.hpp"
+#include "formatter/Formatter.hpp"
+#include "sensor/SensorReadableData.hpp"
 
 /**
  * @brief The HttpDataServer class
@@ -23,7 +23,7 @@ class HttpDataServer : public Runnable {
 public:
     HttpDataServer(
             unsigned short port,
-            std::shared_ptr<SensorDataReadable> data);
+            std::shared_ptr<SensorReadableData> data);
     ~HttpDataServer() override;
 
     inline bool isRunned() const override;

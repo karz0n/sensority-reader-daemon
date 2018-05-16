@@ -1,12 +1,12 @@
 /*
- * SensorCommon.h
+ * SensorCommon.hpp
  *
  *  Created on: Feb 21, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#ifndef SENSORCOMMON_H_
-#define SENSORCOMMON_H_
+#ifndef SENSORCOMMON_HPP_
+#define SENSORCOMMON_HPP_
 
 #include <string>
 
@@ -32,4 +32,4 @@ SensorTypes translateSensorTypeFromString(const std::string& value);
  */
 bool isTemperatureSensor(SensorTypes type);
 
-#endif /* SENSORCOMMON_H_ */
+#endif /* SENSORCOMMON_HPP_ */

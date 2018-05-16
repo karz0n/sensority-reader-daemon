@@ -28,4 +28,4 @@ Formats JsonFormatter::type() const
     return Formats::json;
 }
 
-#endif /* JSONFORMATTER_H_ */
+#endif /* JSONFORMATTER_HPP_ */

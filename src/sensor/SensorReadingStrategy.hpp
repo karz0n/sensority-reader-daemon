@@ -1,12 +1,12 @@
 /*
- * SensorReadingStrategy.h
+ * SensorReadingStrategy.hpp
  *
  *  Created on: Feb 21, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#ifndef SENSORREADINGSTRATEGY_H_
-#define SENSORREADINGSTRATEGY_H_
+#ifndef SENSORREADINGSTRATEGY_HPP_
+#define SENSORREADINGSTRATEGY_HPP_
 
 #include <memory>
 
@@ -61,4 +61,4 @@ public:
     virtual std::unique_ptr<SensorData> read(std::uint8_t pin, SensorTypes type) = 0;
 };
 
-#endif /* SENSORREADINGSTRATEGY_H_ */
+#endif /* SENSORREADINGSTRATEGY_HPP_ */

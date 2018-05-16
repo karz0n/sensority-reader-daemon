@@ -1,22 +1,22 @@
 /*
- * SensorData.h
+ * SensorData.hpp
  *
  *  Created on: Mar 4, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#ifndef SENSORDATA_H_
-#define SENSORDATA_H_
+#ifndef SENSORDATA_HPP_
+#define SENSORDATA_HPP_
 
 #include <memory>
 
 #include "Formatter.hpp"
-#include "SensorDataReadable.hpp"
+#include "SensorReadableData.hpp"
 
 /**
  * @brief The SensorData class
  */
-class SensorData: public SensorDataReadable {
+class SensorData: public SensorReadableData {
 public:
     virtual ~SensorData() = default;
 
@@ -43,4 +43,4 @@ std::string SensorData::format(const Formatter& formatter) const
     return formatter.format(values());
 }
 
-#endif /* SENSORDATA_H_ */
+#endif /* SENSORDATA_HPP_ */

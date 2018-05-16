@@ -1,12 +1,12 @@
 /*
- * TemperatureSensorReadingStrategy.h
+ * TemperatureSensorReadingStrategy.hpp
  *
  *  Created on: Feb 21, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#ifndef TEMPERATURESENSORREADINGSTRATEGY_H_
-#define TEMPERATURESENSORREADINGSTRATEGY_H_
+#ifndef TEMPERATURESENSORREADINGSTRATEGY_HPP_
+#define TEMPERATURESENSORREADINGSTRATEGY_HPP_
 
 #include <memory>
 
@@ -31,4 +31,4 @@ bool TemperatureSensorReadingStrategy::needPause(SensorTypes) const
     return true;
 }
 
-#endif /* TEMPERATURESENSORREADINGSTRATEGY_H_ */
+#endif /* TEMPERATURESENSORREADINGSTRATEGY_HPP_ */

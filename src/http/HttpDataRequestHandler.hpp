@@ -1,5 +1,5 @@
 /*
- * HttpDataRequestHandler.h
+ * HttpDataRequestHandler.hpp
  *
  *  Created on: Mar 22, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
@@ -13,7 +13,7 @@
 #include <Poco/Net/HTTPRequestHandler.h>
 
 #include "formatter/Formatter.hpp"
-#include "sensor/SensorDataReadable.hpp"
+#include "sensor/SensorReadableData.hpp"
 
 /**
  * @brief The HttpDataRequestHandler class
@@ -21,7 +21,7 @@
 class HttpDataRequestHandler: public Poco::Net::HTTPRequestHandler {
 public:
     HttpDataRequestHandler(
-            const SensorDataReadable& storage,
+            const SensorReadableData& storage,
             const Formatter& formatter);
 
     void handleRequest(
@@ -29,7 +29,7 @@ public:
             Poco::Net::HTTPServerResponse& response);
 
 private:
-    const SensorDataReadable& _data;
+    const SensorReadableData& _data;
     const Formatter& _formatter;
 };
 

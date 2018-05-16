@@ -1,12 +1,12 @@
 /*
- * SensorDataStorage.h
+ * SensorDataStorage.hpp
  *
  *  Created on: Feb 28, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#ifndef SENSORDATASTORAGE_H_
-#define SENSORDATASTORAGE_H_
+#ifndef SENSORDATASTORAGE_HPP_
+#define SENSORDATASTORAGE_HPP_
 
 #include <memory>
 #include <string>
@@ -15,14 +15,14 @@
 #include <chrono>
 
 #include "SensorData.hpp"
-#include "SensorDataReadable.hpp"
+#include "SensorReadableData.hpp"
 
 #include "Formatter.hpp"
 
 /**
  * Data storage class
  */
-class SensorDataStorage: public SensorDataReadable {
+class SensorDataStorage: public SensorReadableData {
 public:
 	using Clock = std::chrono::steady_clock;
 	using TimePoint = std::chrono::time_point<Clock>;
@@ -58,4 +58,4 @@ private:
     TimePoint _lastUpdate;
 };
 
-#endif /* SENSORDATASTORAGE_H_ */
+#endif /* SENSORDATASTORAGE_HPP_ */
