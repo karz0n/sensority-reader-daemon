@@ -131,7 +131,7 @@ int SensorReaderApplication::main(const std::vector<std::string>&)
         SensorReader reader(devicePin, deviceType);
 
         unsigned short port = getServerPort();
-        HttpDataServer server(port, reader.storage());
+        HttpDataServer server(port, reader.data());
 
         reader.run();
         server.run();

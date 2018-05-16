@@ -14,6 +14,7 @@
 
 #include "SensorCommon.hpp"
 #include "SensorReadingStrategy.hpp"
+#include "SensorReadableData.hpp"
 #include "SensorDataStorage.hpp"
 
 /**
@@ -24,7 +25,7 @@ public:
     SensorReader(std::uint8_t pin, SensorTypes type);
     virtual ~SensorReader();
 
-    inline std::shared_ptr<SensorDataStorage> storage() const;
+    inline std::shared_ptr<SensorReadableData> data() const;
 
     inline bool isRunned() const;
 	void run();
@@ -51,7 +52,7 @@ bool SensorReader::isRunned() const
     return _runned;
 }
 
-std::shared_ptr<SensorDataStorage> SensorReader::storage() const
+std::shared_ptr<SensorReadableData> SensorReader::data() const
 {
     return _storage;
 }

@@ -33,16 +33,16 @@ SensorReader::~SensorReader()
 
 void SensorReader::run()
 {
-    _runned = true;
     _thread = std::thread(&SensorReader::handler, this);
+    _runned = true;
 }
 
 void SensorReader::shutdown()
 {
-    _runned = false;
     if (_thread.joinable()) {
         _thread.join();
     }
+    _runned = false;
 }
 
 void SensorReader::handler()
