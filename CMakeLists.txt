@@ -30,8 +30,9 @@ endif()
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
 
 find_package(Threads REQUIRED)
-find_package(Poco REQUIRED Util JSON XML Net Foundation)
 find_package(Bcm2835 REQUIRED)
+find_package(Mosquitto REQUIRED)
+find_package(Poco REQUIRED Util JSON XML Net Foundation)
 
 #------------------------------------------------------------------------------
 # Target Configuration
@@ -45,11 +46,13 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${Bcm2835_INCLUDE_DIRS}
+    ${Mosquitto_INCLUDE_DIRS}
     ${Poco_INCLUDE_DIRS})
 
 target_link_libraries(${PROJECT_NAME}
     ${CMAKE_THREAD_LIBS_INIT}
     ${Bcm2835_LIBRARIES}
+    ${Mosquitto_LIBRARIES}
     ${Poco_LIBRARIES})
 
 add_subdirectory(src)
