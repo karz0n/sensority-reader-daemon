@@ -2,7 +2,7 @@ target_sources(${PROJECT_NAME}
     PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/SensorCommon.hpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/SensorCommon.cpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/SensorDataReadable.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReadableData.hpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/SensorData.hpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/SensorDataStorage.hpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/SensorDataStorage.cpp"
