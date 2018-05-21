@@ -8,10 +8,14 @@
 #ifndef DEVICEGPIO_HPP_
 #define DEVICEGPIO_HPP_
 
-#include <cstdint>
 #include <limits>
+#include <memory>
 
-#include "DeviceLibrary.hpp"
+#include "DeviceCommon.hpp"
+
+namespace device {
+
+const unsigned long long DEVICE_MAX_COUNT = std::numeric_limits<unsigned long long>::max();
 
 /**
  * @brief The DeviceGpio class
@@ -19,18 +23,30 @@
 class DeviceGpio
 {
 public:
-    DeviceGpio(std::uint8_t pin);
+    using Ptr = std::shared_ptr<DeviceGpio>;
 
-	void dir(PinDirs dir);
-	void delay(std::uint32_t millis);
-	void delayMicroseconds(std::uint64_t micros);
+    DeviceGpio(PinNum pin);
 
-	PinLevels read();
-	void write(PinLevels level);
-	std::uint64_t count(PinLevels level, std::uint64_t max = std::numeric_limits<std::uint64_t>::max());
+    void dir(PinDirs dir);
+    void delay(unsigned int millis);
+    void delayMicroseconds(unsigned long long micros);
+
+    PinLevels read();
+    void write(PinLevels level);
+    unsigned long long count(PinLevels level, unsigned long long max = DEVICE_MAX_COUNT);
+
+public:
+
+    template<typename ...Ts>
+    static Ptr create(Ts&&... args)
+    {
+        return std::make_shared<DeviceGpio>(std::forward<Ts>(args)...);
+    }
 
 private:
-    std::uint8_t _pin;
+    PinNum _pin;
 };
+
+} // namespace device
 
 #endif /* DEVICEGPIO_HPP_ */

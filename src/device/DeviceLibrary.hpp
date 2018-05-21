@@ -8,24 +8,45 @@
 #ifndef DEVICELIBRARY_HPP_
 #define DEVICELIBRARY_HPP_
 
-#define BCM2835_NO_DELAY_COMPATIBILITY
+#include "DeviceCommon.hpp"
+#include "DeviceGpio.hpp"
 
-#include <bcm2835.h>
-
-/**
- * @brief The PinDirs enum
- * Pin dirs
- */
-enum class PinDirs {
-	out, in, outHigh, outLow
-};
+namespace device {
 
 /**
- * @brief The PinLevels enum
- * Pin levels
+ * @brief The DeviceLibrary class
  */
-enum class PinLevels {
-	low = LOW, high = HIGH
+class DeviceLibrary final {
+public:
+    static DeviceLibrary& instance();
+
+    inline bool isInitialized() const;
+    void initialize();
+    void cleanup();
+
+    DeviceGpio::Ptr gpio(PinNum pin);
+
+public:
+    DeviceLibrary(const DeviceLibrary&) = delete;
+    DeviceLibrary operator=(const DeviceLibrary&) = delete;
+
+private:
+    DeviceLibrary();
+    ~DeviceLibrary();
+
+private:
+    unsigned long _counter;
 };
+
+//
+// Inline
+//
+
+bool DeviceLibrary::isInitialized() const
+{
+    return _counter > 0;
+}
+
+} // namespace device
 
 #endif /* DEVICELIBRARY_HPP_ */

@@ -15,21 +15,25 @@
 #include <Poco/Exception.h>
 
 #include "System.hpp"
-#include "DeviceManager.hpp"
+#include "DeviceCommon.hpp"
+#include "DeviceLibrary.hpp"
 #include "DeviceGpio.hpp"
 #include "TemperatureSensorData.hpp"
 
 static const int DHT_MAXCOUNT = 32000;
 static const int DHT_PULSES = 41;
 
+using device::DeviceLibrary;
+using device::DeviceGpio;
+
 void TemperatureSensorReadingStrategy::setup()
 {
-	DeviceManager::getInstance().initialize();
+    DeviceLibrary::instance().initialize();
 }
 
 void TemperatureSensorReadingStrategy::cleanup()
 {
-	DeviceManager::getInstance().close();
+    DeviceLibrary::instance().cleanup();
 }
 
 void TemperatureSensorReadingStrategy::pause(SensorTypes)
@@ -47,19 +51,19 @@ std::unique_ptr<SensorData> TemperatureSensorReadingStrategy::read(std::uint8_t 
     std::array<std::uint64_t, DHT_PULSES * 2> pulseCounts = {{0}};
 
 	try {
-		DeviceGpio gpio = DeviceManager::getInstance().gpio(pin);
-		gpio.dir(PinDirs::outHigh);
-		gpio.delay(500);
-		gpio.write(PinLevels::low);
-		gpio.delay(type == SensorTypes::dht11 ? 18 : 15);
-		gpio.dir(PinDirs::in);
+        DeviceGpio::Ptr gpio = DeviceLibrary::instance().gpio(pin);
+        gpio->dir(device::PinDirs::outHigh);
+        gpio->delay(500);
+        gpio->write(device::PinLevels::low);
+        gpio->delay(type == SensorTypes::dht11 ? 18 : 15);
+        gpio->dir(device::PinDirs::in);
 		for (volatile int i = 0; i < 50; ++i);
 
-		gpio.count(PinLevels::high, DHT_MAXCOUNT);
+        gpio->count(device::PinLevels::high, DHT_MAXCOUNT);
 
         for (std::size_t i = 0; i < DHT_PULSES * 2; i += 2) {
-			pulseCounts[i] = gpio.count(PinLevels::low, DHT_MAXCOUNT);
-			pulseCounts[i + 1] = gpio.count(PinLevels::high, DHT_MAXCOUNT);
+            pulseCounts[i] = gpio->count(device::PinLevels::low, DHT_MAXCOUNT);
+            pulseCounts[i + 1] = gpio->count(device::PinLevels::high, DHT_MAXCOUNT);
 		}
 
         if (isRoot) {

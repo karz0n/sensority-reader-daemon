@@ -7,63 +7,67 @@
 
 #include "DeviceGpio.hpp"
 
+#define BCM2835_NO_DELAY_COMPATIBILITY
+
+#include <bcm2835.h>
+
 #include <Poco/Exception.h>
 
-DeviceGpio::DeviceGpio(std::uint8_t pin)
-	: _pin(pin)
+namespace device {
+
+DeviceGpio::DeviceGpio(PinNum pin)
+    : _pin(pin)
 { }
 
 void DeviceGpio::dir(PinDirs dir)
 {
-	switch (dir) {
-	case PinDirs::in:
-		bcm2835_gpio_fsel(_pin, BCM2835_GPIO_FSEL_INPT);
-		break;
-	case PinDirs::out:
-		bcm2835_gpio_fsel(_pin, BCM2835_GPIO_FSEL_OUTP);
-		break;
-	case PinDirs::outHigh:
-		bcm2835_gpio_fsel(_pin, BCM2835_GPIO_FSEL_OUTP);
-		bcm2835_gpio_write(_pin, HIGH);
-		break;
-	case PinDirs::outLow:
-		bcm2835_gpio_fsel(_pin, BCM2835_GPIO_FSEL_OUTP);
-		bcm2835_gpio_write(_pin, LOW);
-		break;
-	}
+    switch (dir) {
+    case PinDirs::in:
+        bcm2835_gpio_fsel(_pin, BCM2835_GPIO_FSEL_INPT);
+        break;
+    case PinDirs::out:
+        bcm2835_gpio_fsel(_pin, BCM2835_GPIO_FSEL_OUTP);
+        break;
+    case PinDirs::outHigh:
+        bcm2835_gpio_fsel(_pin, BCM2835_GPIO_FSEL_OUTP);
+        bcm2835_gpio_write(_pin, HIGH);
+        break;
+    case PinDirs::outLow:
+        bcm2835_gpio_fsel(_pin, BCM2835_GPIO_FSEL_OUTP);
+        bcm2835_gpio_write(_pin, LOW);
+        break;
+    }
 }
 
-void DeviceGpio::delay(std::uint32_t millis)
+void DeviceGpio::delay(unsigned int millis)
 {
-	bcm2835_delay(millis);
+    bcm2835_delay(millis);
 }
 
-void DeviceGpio::delayMicroseconds(std::uint64_t micros)
+void DeviceGpio::delayMicroseconds(unsigned long long micros)
 {
-	bcm2835_delayMicroseconds(micros);
+    bcm2835_delayMicroseconds(micros);
 }
 
 PinLevels DeviceGpio::read()
 {
-	std::uint8_t value = bcm2835_gpio_lev(_pin);
-	return PinLevels(value);
+    return static_cast<PinLevels>(bcm2835_gpio_lev(_pin));
 }
 
 void DeviceGpio::write(PinLevels level)
 {
-	std::uint8_t value = std::uint8_t(level);
-	bcm2835_gpio_write(_pin, value);
+    bcm2835_gpio_write(_pin, static_cast<std::uint8_t>(level));
 }
 
-std::uint64_t DeviceGpio::count(PinLevels level, std::uint64_t max)
+unsigned long long DeviceGpio::count(PinLevels level, unsigned long long max)
 {
-	std::uint64_t count = 0;
-	while (read() == level) {
+    unsigned long long count = 0;
+    while (read() == level) {
         if (count++ == max) {
             throw Poco::LogicException("Max count reached");
         }
-	}
-	return count;
+    }
+    return count;
 }
 
-
+} // namespace device
