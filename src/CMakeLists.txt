@@ -2,7 +2,6 @@ add_subdirectory(common)
 add_subdirectory(connectivity)
 add_subdirectory(device)
 add_subdirectory(formatter)
-add_subdirectory(os)
 add_subdirectory(sensor)
 
 target_sources(${PROJECT_NAME}

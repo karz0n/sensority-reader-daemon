@@ -12,6 +12,8 @@
 
 #include <Poco/Exception.h>
 
+namespace common {
+
 bool System::isRoot()
 {
     return (geteuid() == 0);
@@ -22,8 +24,8 @@ void System::setCurrentThreadHighPriority()
     sched_param sched = {0};
     sched.sched_priority = sched_get_priority_max(SCHED_FIFO);
 
-    int retVal = sched_setscheduler(0, SCHED_FIFO, &sched);
-    if (retVal) {
+    int rc = sched_setscheduler(0, SCHED_FIFO, &sched);
+    if (rc) {
         throw Poco::RuntimeException("Error set high priority");
     }
 }
@@ -31,10 +33,12 @@ void System::setCurrentThreadHighPriority()
 void System::setCurrentThreadDefaultPriority()
 {
     sched_param sched = {0};
-    sched.sched_priority = 0;
+    sched.sched_priority = SCHED_OTHER;
 
-    int retVal = sched_setscheduler(0, SCHED_OTHER, &sched);
-    if (retVal) {
+    int rc = sched_setscheduler(0, SCHED_OTHER, &sched);
+    if (rc) {
         throw Poco::RuntimeException("Error set default priority");
     }
 }
+
+} // namespace common

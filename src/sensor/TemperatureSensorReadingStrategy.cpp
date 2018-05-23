@@ -25,6 +25,7 @@ static const int DHT_PULSES = 41;
 
 using device::DeviceLibrary;
 using device::DeviceGpio;
+using common::System;
 
 void TemperatureSensorReadingStrategy::setup()
 {
