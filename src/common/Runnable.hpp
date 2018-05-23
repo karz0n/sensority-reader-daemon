@@ -8,6 +8,8 @@
 #ifndef RUNNABLE_HPP_
 #define RUNNABLE_HPP_
 
+namespace common {
+
 /**
  * @brief The Runnable class
  */
@@ -21,5 +23,7 @@ public:
     virtual bool isRunned() const = 0;
     virtual void shutdown() = 0;
 };
+
+} // namespace common
 
 #endif // RUNNABLE_HPP_

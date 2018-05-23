@@ -21,7 +21,7 @@ namespace connectivity {
 /**
  * @brief The HttpDataServer class
  */
-class HttpDataServer : public Runnable {
+class HttpDataServer : public common::Runnable {
 public:
     HttpDataServer(
             unsigned short port,
