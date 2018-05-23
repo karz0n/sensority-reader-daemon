@@ -19,7 +19,7 @@ class SensorReadableData {
 public:
     virtual ~SensorReadableData() = default;
 
-    virtual std::string format(const Formatter& formatter) const = 0;
+    virtual std::string format(const formatter::Formatter& formatter) const = 0;
 };
 
 #endif // SENSORREADABLEDATA_HPP

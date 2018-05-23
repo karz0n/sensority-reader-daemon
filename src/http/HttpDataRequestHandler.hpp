@@ -22,7 +22,7 @@ class HttpDataRequestHandler: public Poco::Net::HTTPRequestHandler {
 public:
     HttpDataRequestHandler(
             const SensorReadableData& storage,
-            const Formatter& formatter);
+            const formatter::Formatter& formatter);
 
     void handleRequest(
             Poco::Net::HTTPServerRequest& request,
@@ -30,7 +30,7 @@ public:
 
 private:
     const SensorReadableData& _data;
-    const Formatter& _formatter;
+    const formatter::Formatter& _formatter;
 };
 
 #endif /* HTTPDATAREQUESTHANDLER_HPP_ */

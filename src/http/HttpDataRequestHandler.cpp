@@ -16,7 +16,7 @@ using Poco::Net::HTTPServerResponse;
 
 HttpDataRequestHandler::HttpDataRequestHandler(
         const SensorReadableData& d,
-        const Formatter& f)
+        const formatter::Formatter& f)
     : _data(d), _formatter(f)
 { }
 
@@ -32,10 +32,10 @@ void HttpDataRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServe
     response.setChunkedTransferEncoding(true);
 
     switch (_formatter.type()) {
-    case Formats::text:
+    case formatter::Formats::text:
         response.setContentType("text/plain");
         break;
-    case Formats::json:
+    case formatter::Formats::json:
         response.setContentType("application/json");
         break;
     default:

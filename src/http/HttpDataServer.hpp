@@ -35,7 +35,7 @@ public:
     HttpDataServer& operator=(const HttpDataServer&) = delete;
 
 private:
-    std::shared_ptr<Formatter> getFormatter();
+    formatter::Formatter::Ptr getFormatter();
 
 private:
     std::unique_ptr<Poco::Net::HTTPServer> _server;

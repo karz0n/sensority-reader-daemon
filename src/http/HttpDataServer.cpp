@@ -49,7 +49,7 @@ void HttpDataServer::shutdown()
     _runned = false;
 }
 
-std::shared_ptr<Formatter> HttpDataServer::getFormatter()
+formatter::Formatter::Ptr HttpDataServer::getFormatter()
 {
-    return std::make_shared<JsonFormatter>();
+    return formatter::Formatter::create<formatter::JsonFormatter>();
 }

@@ -13,7 +13,7 @@ using Poco::Net::HTTPServerRequest;
 
 HttpDataRequestHandlerFactory::HttpDataRequestHandlerFactory(
         std::shared_ptr<SensorReadableData> d,
-        std::shared_ptr<Formatter> f)
+        formatter::Formatter::Ptr f)
     : _data(d), _formatter(f)
 { }
 

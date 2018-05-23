@@ -29,7 +29,7 @@ public:
 
 	SensorDataStorage();
 
-    std::string format(const Formatter& formatter) const override;
+    std::string format(const formatter::Formatter& formatter) const override;
 
     void update(std::unique_ptr<SensorData> data);
 	bool empty() const;

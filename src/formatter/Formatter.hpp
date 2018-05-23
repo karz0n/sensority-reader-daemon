@@ -9,8 +9,11 @@
 #define FORMATTER_HPP_
 
 #include <variant>
+#include <memory>
 #include <string>
 #include <unordered_map>
+
+namespace formatter {
 
 /**
  * @brief The Formats enum
@@ -24,13 +27,34 @@ enum class Formats {
  */
 class Formatter {
 public:
+    using Ptr = std::shared_ptr<Formatter>;
     using Value = std::variant<int, double>;
     using Values = std::unordered_map<std::string, Value>;
 
     virtual ~Formatter() = default;
 
-    virtual std::string format(const Values& values) const = 0;
+    /**
+     * @brief format type of this formatter
+     * @return type identifier
+     */
     virtual Formats type() const = 0;
+
+    /**
+     * @brief format input values
+     * @param values input values
+     * @return string in specified format
+     */
+    virtual std::string format(const Values& values) const = 0;
+
+public:
+
+    template <typename T, typename ...As>
+    static Ptr create(As... args)
+    {
+        return std::make_shared<T>(std::forward<As>(args)...);
+    }
 };
+
+} // namespace formatter
 
 #endif /* FORMATTER_HPP_ */

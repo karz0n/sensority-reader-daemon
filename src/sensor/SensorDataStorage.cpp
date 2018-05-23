@@ -11,7 +11,7 @@ SensorDataStorage::SensorDataStorage()
 	: _empty(true)
 { }
 
-std::string SensorDataStorage::format(const Formatter& formatter) const
+std::string SensorDataStorage::format(const formatter::Formatter& formatter) const
 {
     WriteLock lock = lockWrite();
 	return _data->format(formatter);

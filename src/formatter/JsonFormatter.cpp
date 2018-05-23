@@ -12,31 +12,35 @@
 #include <Poco/Exception.h>
 #include <Poco/JSON/PrintHandler.h>
 
+namespace formatter {
+
 std::string JsonFormatter::format(const Values& values) const
 {
-	std::ostringstream os;
+    std::ostringstream os;
+    Poco::JSON::PrintHandler printer(os);
 
-	Poco::JSON::PrintHandler printer(os);
-	printer.startObject();
-	for (auto it = values.begin(); it != values.end(); ++it) {
-		const std::string& name = it->first;
-		const Value value = it->second;
+    printer.startObject();
+    for (auto it = values.begin(); it != values.end(); ++it) {
+        const std::string& name = it->first;
+        const Value& value = it->second;
 
-		printer.key(name);
+        printer.key(name);
 
-		if (std::holds_alternative<int>(value)) {
-			printer.value(std::get<int>(value));
-			continue;
-		}
+        if (std::holds_alternative<int>(value)) {
+            printer.value(std::get<int>(value));
+            continue;
+        }
 
-		if (std::holds_alternative<double>(value)) {
-			printer.value(std::get<double>(value));
-			continue;
-		}
+        if (std::holds_alternative<double>(value)) {
+            printer.value(std::get<double>(value));
+            continue;
+        }
 
         throw Poco::LogicException("Unsupported value type");
-	}
-	printer.endObject();
+    }
+    printer.endObject();
 
-	return os.str();
+    return os.str();
 }
+
+} // namespace formatter

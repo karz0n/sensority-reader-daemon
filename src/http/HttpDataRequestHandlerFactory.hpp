@@ -23,13 +23,13 @@ class HttpDataRequestHandlerFactory: public Poco::Net::HTTPRequestHandlerFactory
 public:
     HttpDataRequestHandlerFactory(
             std::shared_ptr<SensorReadableData> data,
-            std::shared_ptr<Formatter> formatter);
+            formatter::Formatter::Ptr formatter);
 
     Poco::Net::HTTPRequestHandler* createRequestHandler(const Poco::Net::HTTPServerRequest& request);
 
 private:
     std::shared_ptr<SensorReadableData> _data;
-    std::shared_ptr<Formatter> _formatter;
+    formatter::Formatter::Ptr _formatter;
 };
 
 #endif /* HTTPDATAREQUESTHANDLERFACTORY_HPP_ */

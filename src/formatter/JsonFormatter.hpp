@@ -10,13 +10,15 @@
 
 #include "Formatter.hpp"
 
+namespace formatter {
+
 /**
  * @brief The JsonFormatter class
  */
 class JsonFormatter : public Formatter {
 public:
-	std::string format(const Values& values) const override;
     inline Formats type() const override;
+    std::string format(const Values& values) const override;
 };
 
 //
@@ -27,5 +29,7 @@ Formats JsonFormatter::type() const
 {
     return Formats::json;
 }
+
+} // namespace formatter
 
 #endif /* JSONFORMATTER_HPP_ */

@@ -25,20 +25,20 @@ public:
      * @param formatter
      * @return
      */
-    inline std::string format(const Formatter& formatter) const;
+    inline std::string format(const formatter::Formatter& formatter) const;
 
     /**
      * @brief values
      * @return
      */
-    virtual Formatter::Values values() const = 0;
+    virtual formatter::Formatter::Values values() const = 0;
 };
 
 //
 // Inlines
 //
 
-std::string SensorData::format(const Formatter& formatter) const
+std::string SensorData::format(const formatter::Formatter& formatter) const
 {
     return formatter.format(values());
 }
