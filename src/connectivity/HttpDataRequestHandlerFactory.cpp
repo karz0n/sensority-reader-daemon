@@ -11,6 +11,8 @@
 using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPServerRequest;
 
+namespace connectivity {
+
 HttpDataRequestHandlerFactory::HttpDataRequestHandlerFactory(
         std::shared_ptr<SensorReadableData> d,
         formatter::Formatter::Ptr f)
@@ -19,10 +21,11 @@ HttpDataRequestHandlerFactory::HttpDataRequestHandlerFactory(
 
 HTTPRequestHandler* HttpDataRequestHandlerFactory::createRequestHandler(const HTTPServerRequest& request)
 {
-    if (request.getURI() == "/") {
-        return new HttpDataRequestHandler(*_data, *_formatter);
-    }
-    else {
+    if (request.getURI() != "/") {
         return nullptr;
     }
+
+    return new HttpDataRequestHandler(*_data, *_formatter);
 }
+
+} // namespace connectivity

@@ -16,6 +16,8 @@
 #include "formatter/Formatter.hpp"
 #include "sensor/SensorReadableData.hpp"
 
+namespace connectivity {
+
 /**
  * @brief The HttpDataRequestHandlerFactory class
  */
@@ -31,5 +33,7 @@ private:
     std::shared_ptr<SensorReadableData> _data;
     formatter::Formatter::Ptr _formatter;
 };
+
+} // namespace connectivity
 
 #endif /* HTTPDATAREQUESTHANDLERFACTORY_HPP_ */

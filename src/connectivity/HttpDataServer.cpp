@@ -15,6 +15,8 @@
 using Poco::Net::HTTPServerParams;
 using Poco::Net::HTTPServer;
 
+namespace connectivity {
+
 HttpDataServer::HttpDataServer(
         unsigned short p,
         std::shared_ptr<SensorReadableData> d)
@@ -53,3 +55,5 @@ formatter::Formatter::Ptr HttpDataServer::getFormatter()
 {
     return formatter::Formatter::create<formatter::JsonFormatter>();
 }
+
+} // namespace connectivity {

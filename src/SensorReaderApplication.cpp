@@ -8,7 +8,7 @@
 #include "SensorReaderApplication.hpp"
 
 #include "sensor/SensorReader.hpp"
-#include "http/HttpDataServer.hpp"
+#include "connectivity/HttpDataServer.hpp"
 
 #include <string>
 #include <iostream>
@@ -31,6 +31,8 @@ using Poco::Util::OptionCallback;
 using Poco::Util::HelpFormatter;
 using Poco::Util::IntValidator;
 using Poco::Util::RegExpValidator;
+
+using connectivity::HttpDataServer;
 
 /**
  * @brief Default server port

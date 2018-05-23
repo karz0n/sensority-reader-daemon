@@ -16,6 +16,8 @@
 #include "formatter/Formatter.hpp"
 #include "sensor/SensorReadableData.hpp"
 
+namespace connectivity {
+
 /**
  * @brief The HttpDataServer class
  */
@@ -50,5 +52,7 @@ bool HttpDataServer::isRunned() const
 {
     return _runned;
 }
+
+} // namespace connectivity
 
 #endif /* HTTPDATASERVER_HPP_ */

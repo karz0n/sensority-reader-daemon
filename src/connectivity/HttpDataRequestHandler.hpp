@@ -12,8 +12,13 @@
 #include <Poco/Net/HTTPServerResponse.h>
 #include <Poco/Net/HTTPRequestHandler.h>
 
-#include "formatter/Formatter.hpp"
-#include "sensor/SensorReadableData.hpp"
+namespace formatter {
+class Formatter;
+}
+
+class SensorReadableData;
+
+namespace connectivity {
 
 /**
  * @brief The HttpDataRequestHandler class
@@ -32,5 +37,7 @@ private:
     const SensorReadableData& _data;
     const formatter::Formatter& _formatter;
 };
+
+} // namespace connectivity
 
 #endif /* HTTPDATAREQUESTHANDLER_HPP_ */
