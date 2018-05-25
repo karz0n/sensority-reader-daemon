@@ -15,11 +15,13 @@
 using Poco::Net::HTTPServerParams;
 using Poco::Net::HTTPServer;
 
+using sensor::SensorReadableData;
+
 namespace connectivity {
 
 HttpDataServer::HttpDataServer(
         unsigned short p,
-        std::shared_ptr<SensorReadableData> d)
+        SensorReadableData::Ptr d)
     : _runned(false)
 {
     _server = std::make_unique<HTTPServer>(

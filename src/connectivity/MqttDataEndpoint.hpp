@@ -108,11 +108,13 @@ public:
     MqttDataEndpoint operator=(const MqttDataEndpoint&) = delete;
 
 public:
-
-    template<typename ...Ts>
-    static Ptr create(Ts&&... args)
+    /**
+     * Mqtt data endpoint factory method
+     */
+    template<typename ...As>
+    static Ptr create(As&&... args)
     {
-        return std::make_shared<MqttDataEndpoint>(std::forward<Ts>(args)...);
+        return std::make_shared<MqttDataEndpoint>(std::forward<As>(args)...);
     }
 
 private:

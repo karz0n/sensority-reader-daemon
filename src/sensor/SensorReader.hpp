@@ -12,34 +12,38 @@
 #include <atomic>
 #include <memory>
 
+#include "device/DeviceCommon.hpp"
+
 #include "SensorCommon.hpp"
 #include "SensorReadingStrategy.hpp"
 #include "SensorReadableData.hpp"
 #include "SensorDataStorage.hpp"
+
+namespace sensor {
 
 /**
  * Sensor reader class
  */
 class SensorReader {
 public:
-    SensorReader(std::uint8_t pin, SensorTypes type);
+    SensorReader(device::PinNum pin, SensorTypes type);
     virtual ~SensorReader();
 
-    inline std::shared_ptr<SensorReadableData> data() const;
+    inline SensorReadableData::Ptr data() const;
 
     inline bool isRunned() const;
-	void run();
-	void shutdown();
+    void run();
+    void shutdown();
 
 private:
     void handler();
 
 private:
-    std::uint8_t _pin;
-	SensorTypes _type;
+    device::PinNum _pin;
+    SensorTypes _type;
     std::unique_ptr<SensorReadingStrategy> _strategy;
-    std::shared_ptr<SensorDataStorage> _storage;
-	std::thread _thread;
+    SensorDataStorage::Ptr _storage;
+    std::thread _thread;
     std::atomic<bool> _runned;
 };
 
@@ -52,9 +56,11 @@ bool SensorReader::isRunned() const
     return _runned;
 }
 
-std::shared_ptr<SensorReadableData> SensorReader::data() const
+SensorReadableData::Ptr SensorReader::data() const
 {
     return _storage;
 }
+
+} // namespace sensor
 
 #endif /* SENSORREADER_HPP_ */

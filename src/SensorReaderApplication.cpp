@@ -33,6 +33,8 @@ using Poco::Util::IntValidator;
 using Poco::Util::RegExpValidator;
 
 using connectivity::HttpDataServer;
+using sensor::SensorTypes;
+using sensor::SensorReader;
 
 /**
  * @brief Default server port
@@ -201,5 +203,5 @@ SensorTypes SensorReaderApplication::getDeviceType() const
     std::string value = config().getString(option.binding(), DEFAULT_DEVICE_TYPE);
     validator->validate(option, value);
 
-    return translateSensorTypeFromString(value);
+    return sensor::translateSensorTypeFromString(value);
 }

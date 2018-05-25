@@ -7,8 +7,10 @@
 
 #include "TemperatureSensorData.hpp"
 
+namespace sensor {
+
 TemperatureSensorData::TemperatureSensorData(double t, double h)
-	: _temperature(t), _humidity(h)
+    : _temperature(t), _humidity(h)
 { }
 
 formatter::Formatter::Values TemperatureSensorData::values() const
@@ -18,3 +20,5 @@ formatter::Formatter::Values TemperatureSensorData::values() const
     values.emplace(std::make_pair("humidity", _humidity));
     return values;
 }
+
+} // namespace sensor

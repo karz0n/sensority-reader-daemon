@@ -9,33 +9,46 @@
 #define SENSORDATASTORAGE_HPP_
 
 #include <memory>
-#include <string>
 #include <mutex>
 #include <shared_mutex>
 #include <chrono>
+#include <utility>
 
 #include "SensorData.hpp"
 #include "SensorReadableData.hpp"
 
 #include "Formatter.hpp"
 
+namespace sensor {
+
 /**
  * Data storage class
  */
-class SensorDataStorage: public SensorReadableData {
+class SensorDataStorage : public SensorReadableData {
 public:
-	using Clock = std::chrono::steady_clock;
-	using TimePoint = std::chrono::time_point<Clock>;
+    using Ptr = std::shared_ptr<SensorDataStorage>;
+    using Clock = std::chrono::steady_clock;
+    using TimePoint = std::chrono::time_point<Clock>;
 
-	SensorDataStorage();
+    SensorDataStorage();
 
     std::string format(const formatter::Formatter& formatter) const override;
 
-    void update(std::unique_ptr<SensorData> data);
-	bool empty() const;
-	TimePoint lastUpdate() const;
+    void update(SensorData::Ptr data);
+    bool empty() const;
+    TimePoint lastUpdate() const;
 
-protected:
+public:
+    /**
+     * Sensor data storage factory method
+     */
+    template<typename ...As>
+    static Ptr create(As&&... args)
+    {
+        return std::make_shared<SensorDataStorage>(std::forward<As>(args)...);
+    }
+
+private:
     using ReadLock = std::unique_lock<std::shared_mutex>;
     using WriteLock = std::shared_lock<std::shared_mutex>;
 
@@ -52,10 +65,12 @@ protected:
     WriteLock lockWrite() const;
 
 private:
-	mutable std::shared_mutex _mutex;
-    std::unique_ptr<SensorData> _data;
-	bool _empty;
+    mutable std::shared_mutex _mutex;
+    SensorData::Ptr _data;
+    bool _empty;
     TimePoint _lastUpdate;
 };
+
+} // namespace sensor
 
 #endif /* SENSORDATASTORAGE_HPP_ */

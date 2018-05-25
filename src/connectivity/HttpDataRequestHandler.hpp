@@ -16,17 +16,19 @@ namespace formatter {
 class Formatter;
 }
 
+namespace sensor {
 class SensorReadableData;
+}
 
 namespace connectivity {
 
 /**
  * @brief The HttpDataRequestHandler class
  */
-class HttpDataRequestHandler: public Poco::Net::HTTPRequestHandler {
+class HttpDataRequestHandler : public Poco::Net::HTTPRequestHandler {
 public:
     HttpDataRequestHandler(
-            const SensorReadableData& storage,
+            const sensor::SensorReadableData& storage,
             const formatter::Formatter& formatter);
 
     void handleRequest(
@@ -34,7 +36,7 @@ public:
             Poco::Net::HTTPServerResponse& response);
 
 private:
-    const SensorReadableData& _data;
+    const sensor::SensorReadableData& _data;
     const formatter::Formatter& _formatter;
 };
 

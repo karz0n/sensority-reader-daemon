@@ -10,12 +10,14 @@
 
 #include <string>
 
+namespace sensor {
+
 /**
  * @brief The SensorTypes enum.
  * Sensor types.
  */
 enum class SensorTypes {
-	dht11, dht22
+    dht11, dht22
 };
 
 /**
@@ -31,5 +33,7 @@ SensorTypes translateSensorTypeFromString(const std::string& value);
  * @return The flag that indicate if we have temperature sensor.
  */
 bool isTemperatureSensor(SensorTypes type);
+
+} // namespace sensor
 
 #endif /* SENSORCOMMON_HPP_ */

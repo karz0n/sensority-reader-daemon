@@ -10,16 +10,20 @@
 
 #include <memory>
 
+#include "device/DeviceCommon.hpp"
+
 #include "SensorData.hpp"
 #include "SensorReadingStrategy.hpp"
 
-class TemperatureSensorReadingStrategy: public SensorReadingStrategy {
+namespace sensor {
+
+class TemperatureSensorReadingStrategy : public SensorReadingStrategy {
 public:
-	void setup() override;
-	void cleanup() override;
-	void pause(SensorTypes type) override;
+    void setup() override;
+    void cleanup() override;
+    void pause(SensorTypes type) override;
     inline bool needPause(SensorTypes type) const override;
-    std::unique_ptr<SensorData> read(std::uint8_t pin, SensorTypes type) override;
+    SensorData::Ptr read(device::PinNum pin, SensorTypes type) override;
 };
 
 //
@@ -30,5 +34,7 @@ bool TemperatureSensorReadingStrategy::needPause(SensorTypes) const
 {
     return true;
 }
+
+} // namespace sensor
 
 #endif /* TEMPERATURESENSORREADINGSTRATEGY_HPP_ */

@@ -36,11 +36,13 @@ public:
     unsigned long long count(PinLevels level, unsigned long long max = DEVICE_MAX_COUNT);
 
 public:
-
-    template<typename ...Ts>
-    static Ptr create(Ts&&... args)
+    /**
+     * Device gpio factory method
+     */
+    template<typename ...As>
+    static Ptr create(As&&... args)
     {
-        return std::make_shared<DeviceGpio>(std::forward<Ts>(args)...);
+        return std::make_shared<DeviceGpio>(std::forward<As>(args)...);
     }
 
 private:

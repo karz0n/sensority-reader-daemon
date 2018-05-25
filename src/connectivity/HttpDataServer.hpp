@@ -23,9 +23,8 @@ namespace connectivity {
  */
 class HttpDataServer : public common::Runnable {
 public:
-    HttpDataServer(
-            unsigned short port,
-            std::shared_ptr<SensorReadableData> data);
+    HttpDataServer(unsigned short port,
+                   sensor::SensorReadableData::Ptr data);
     ~HttpDataServer() override;
 
     inline bool isRunned() const override;

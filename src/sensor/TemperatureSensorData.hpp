@@ -8,15 +8,15 @@
 #ifndef TEMPERATURESENSORDATA_HPP_
 #define TEMPERATURESENSORDATA_HPP_
 
-#include <string>
-
 #include "Formatter.hpp"
 #include "SensorData.hpp"
+
+namespace sensor {
 
 /**
  * @brief The TemperatureSensorData class
  */
-class TemperatureSensorData: public SensorData {
+class TemperatureSensorData : public SensorData {
 public:
     TemperatureSensorData(double temperature, double humidity);
 
@@ -36,12 +36,14 @@ private:
 
 double TemperatureSensorData::getTemperature()
 {
-	return _temperature;
+    return _temperature;
 }
 
 double TemperatureSensorData::getHumidity()
 {
-	return _humidity;
+    return _humidity;
 }
+
+} // namespace sensor
 
 #endif /* TEMPERATURESENSORDATA_HPP_ */

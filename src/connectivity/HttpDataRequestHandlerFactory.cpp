@@ -14,7 +14,7 @@ using Poco::Net::HTTPServerRequest;
 namespace connectivity {
 
 HttpDataRequestHandlerFactory::HttpDataRequestHandlerFactory(
-        std::shared_ptr<SensorReadableData> d,
+        sensor::SensorReadableData::Ptr d,
         formatter::Formatter::Ptr f)
     : _data(d), _formatter(f)
 { }

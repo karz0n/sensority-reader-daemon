@@ -7,6 +7,8 @@
 
 #include "SensorDataStorage.hpp"
 
+namespace sensor {
+
 SensorDataStorage::SensorDataStorage()
 	: _empty(true)
 { }
@@ -17,12 +19,12 @@ std::string SensorDataStorage::format(const formatter::Formatter& formatter) con
 	return _data->format(formatter);
 }
 
-void SensorDataStorage::update(std::unique_ptr<SensorData> data)
+void SensorDataStorage::update(SensorData::Ptr data)
 {
     ReadLock lock = lockRead();
+    _data = std::move(data);
 	_empty = false;
 	_lastUpdate = Clock::now();
-    _data = std::move(data);
 }
 
 bool SensorDataStorage::empty() const
@@ -46,4 +48,6 @@ SensorDataStorage::WriteLock SensorDataStorage::lockWrite() const
 {
     return WriteLock(_mutex);
 }
+
+} // namespace sensor
 

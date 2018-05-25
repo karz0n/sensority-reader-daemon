@@ -38,7 +38,7 @@ private:
     void displayHelp();
     unsigned short getServerPort() const;
     std::uint8_t getDevicePin() const;
-    SensorTypes getDeviceType() const;
+    sensor::SensorTypes getDeviceType() const;
 
 private:
 	bool _helpRequested;

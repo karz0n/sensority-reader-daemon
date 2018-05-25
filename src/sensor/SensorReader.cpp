@@ -17,11 +17,13 @@
 
 using Poco::Util::Application;
 
-SensorReader::SensorReader(std::uint8_t p, SensorTypes t)
+namespace sensor {
+
+SensorReader::SensorReader(device::PinNum p, SensorTypes t)
     : _pin(p), _type(t), _runned(false)
 {
     _strategy = SensorReadingStrategyFactory::createReadingStrategy(t);
-    _storage = std::make_shared<SensorDataStorage>();
+    _storage = SensorDataStorage::create();
 }
 
 SensorReader::~SensorReader()
@@ -72,3 +74,5 @@ void SensorReader::handler()
     }
     _strategy->cleanup();
 }
+
+} // namespace sensor

@@ -12,6 +12,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <utility>
 
 namespace formatter {
 
@@ -47,7 +48,9 @@ public:
     virtual std::string format(const Values& values) const = 0;
 
 public:
-
+    /**
+     * Formatter factory method
+     */
     template <typename T, typename ...As>
     static Ptr create(As... args)
     {

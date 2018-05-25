@@ -17,6 +17,7 @@
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
 
+using sensor::SensorReadableData;
 using formatter::Formats;
 using formatter::Formatter;
 

@@ -7,13 +7,13 @@
 
 #include "SensorReadingStrategyFactory.hpp"
 
-#include <memory>
-
 #include <Poco/Exception.h>
 
 #include "TemperatureSensorReadingStrategy.hpp"
 
-std::unique_ptr<SensorReadingStrategy> SensorReadingStrategyFactory::createReadingStrategy(SensorTypes type)
+namespace sensor {
+
+SensorReadingStrategy::Ptr SensorReadingStrategyFactory::createReadingStrategy(SensorTypes type)
 {
     if (isTemperatureSensor(type)) {
         return SensorReadingStrategyFactory::createTemperatureReadingStrategy();
@@ -22,7 +22,9 @@ std::unique_ptr<SensorReadingStrategy> SensorReadingStrategyFactory::createReadi
     throw Poco::InvalidArgumentException("Unknown sensor type");
 }
 
-std::unique_ptr<SensorReadingStrategy> SensorReadingStrategyFactory::createTemperatureReadingStrategy()
+SensorReadingStrategy::Ptr SensorReadingStrategyFactory::createTemperatureReadingStrategy()
 {
-    return std::make_unique<TemperatureSensorReadingStrategy>();
+    return SensorReadingStrategy::create<TemperatureSensorReadingStrategy>();
 }
+
+} // namespace sensor

@@ -8,10 +8,10 @@
 #ifndef SENSORREADINGSTRATEGYFACTORY_HPP_
 #define SENSORREADINGSTRATEGYFACTORY_HPP_
 
-#include <memory>
-
 #include "SensorCommon.hpp"
 #include "SensorReadingStrategy.hpp"
+
+namespace sensor {
 
 /**
  * @brief The SensorReadingStrategyFactory class
@@ -19,9 +19,12 @@
 class SensorReadingStrategyFactory
 {
 public:
-    static std::unique_ptr<SensorReadingStrategy> createReadingStrategy(SensorTypes type);
+    static SensorReadingStrategy::Ptr createReadingStrategy(SensorTypes type);
 
-    static std::unique_ptr<SensorReadingStrategy> createTemperatureReadingStrategy();
+private:
+    static SensorReadingStrategy::Ptr createTemperatureReadingStrategy();
 };
+
+} // namespace sensor
 
 #endif // SENSORREADINGSTRATEGYFACTORY_HPP_

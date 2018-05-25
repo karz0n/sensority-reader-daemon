@@ -10,6 +10,8 @@
 #include <Poco/Exception.h>
 #include <Poco/String.h>
 
+namespace sensor {
+
 SensorTypes translateSensorTypeFromString(const std::string& value)
 {
     std::string s = Poco::trim(Poco::toLower(value));
@@ -28,3 +30,5 @@ bool isTemperatureSensor(SensorTypes type)
 {
    return (type == SensorTypes::dht11 || type == SensorTypes::dht22);
 }
+
+} // namespace sensor

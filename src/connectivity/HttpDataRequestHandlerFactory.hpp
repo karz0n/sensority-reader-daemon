@@ -21,16 +21,16 @@ namespace connectivity {
 /**
  * @brief The HttpDataRequestHandlerFactory class
  */
-class HttpDataRequestHandlerFactory: public Poco::Net::HTTPRequestHandlerFactory {
+class HttpDataRequestHandlerFactory : public Poco::Net::HTTPRequestHandlerFactory {
 public:
     HttpDataRequestHandlerFactory(
-            std::shared_ptr<SensorReadableData> data,
+            sensor::SensorReadableData::Ptr data,
             formatter::Formatter::Ptr formatter);
 
     Poco::Net::HTTPRequestHandler* createRequestHandler(const Poco::Net::HTTPServerRequest& request);
 
 private:
-    std::shared_ptr<SensorReadableData> _data;
+    sensor::SensorReadableData::Ptr _data;
     formatter::Formatter::Ptr _formatter;
 };
 
