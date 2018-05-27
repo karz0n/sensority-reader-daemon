@@ -8,11 +8,14 @@
 #ifndef SENSORREADERAPPLICATION_HPP_
 #define SENSORREADERAPPLICATION_HPP_
 
-#include <cstdint>
+#include <string>
 
 #include <Poco/Util/ServerApplication.h>
 
+#include "device/DeviceCommon.hpp"
+#include "connectivity/HttpDataServer.hpp"
 #include "sensor/SensorCommon.hpp"
+#include "sensor/SensorReader.hpp"
 
 /**
  * @brief The SensorReaderApplication class
@@ -24,10 +27,7 @@ public:
 
 protected:
 	void initialize(Poco::Util::Application& self) override;
-	void uninitialize() override;
-	void reinitialize(Poco::Util::Application& self) override;
 	void defineOptions(Poco::Util::OptionSet& options) override;
-	void handleOption(const std::string& name, const std::string& value) override;
 
     int main(const std::vector<std::string>& args) override;
 
@@ -36,8 +36,15 @@ protected:
 
 private:
     void displayHelp();
-    unsigned short getServerPort() const;
-    std::uint8_t getDevicePin() const;
+
+    sensor::SensorReader::Ptr createSensorReader();
+    connectivity::HttpDataServer::Ptr createHttpServer(sensor::SensorReadableData::Ptr);
+
+    bool isHttpEnabled() const;
+    unsigned short getHttpPort() const;
+    std::string getHttpFormat() const;
+
+    device::PinNum getDevicePin() const;
     sensor::SensorTypes getDeviceType() const;
 
 private:

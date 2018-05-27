@@ -7,49 +7,51 @@
 
 #include "SensorReaderApplication.hpp"
 
-#include "sensor/SensorReader.hpp"
-#include "connectivity/HttpDataServer.hpp"
-
-#include <string>
+#include <regex>
 #include <iostream>
 #include <exception>
 
-#include <Poco/NumberParser.h>
+#include <Poco/Format.h>
 #include <Poco/Exception.h>
-#include <Poco/Util/Validator.h>
-#include <Poco/Util/IntValidator.h>
-#include <Poco/Util/RegExpValidator.h>
 #include <Poco/Util/Option.h>
 #include <Poco/Util/OptionCallback.h>
 #include <Poco/Util/HelpFormatter.h>
 
-using Poco::Util::Validator;
 using Poco::Util::Application;
 using Poco::Util::OptionSet;
 using Poco::Util::Option;
 using Poco::Util::OptionCallback;
 using Poco::Util::HelpFormatter;
-using Poco::Util::IntValidator;
-using Poco::Util::RegExpValidator;
 
 using connectivity::HttpDataServer;
 using sensor::SensorTypes;
 using sensor::SensorReader;
-
-/**
- * @brief Default server port
- */
-static const std::string DEFAULT_SERVER_PORT {"8080"};
+using sensor::SensorReadableData;
 
 /**
  * @brief Default device pin value
  */
-static const std::string DEFAULT_DEVICE_PIN {"22"};
+static const int DEFAULT_DEVICE_PIN = 22;
 
 /**
  * @brief Default device type value
  */
 static const std::string DEFAULT_DEVICE_TYPE {"DHT22"};
+
+/**
+ * @brief Default http enable state
+ */
+static const bool DEFAULT_HTTP_ENABLE = false;
+
+/**
+ * @brief Default http server port
+ */
+static const int DEFAULT_HTTP_PORT = 8080;
+
+/**
+ * @brief Default HTTP data format
+ */
+static const std::string DEFAULT_HTTP_FORMAT {"json"};
 
 SensorReaderApplication::SensorReaderApplication()
 	: _helpRequested(false)
@@ -64,41 +66,22 @@ void SensorReaderApplication::initialize(Application& self)
 	ServerApplication::initialize(self);
 }
 
-void SensorReaderApplication::uninitialize()
-{
-	ServerApplication::uninitialize();
-}
-
-void SensorReaderApplication::reinitialize(Application& self)
-{
-	ServerApplication::reinitialize(self);
-}
-
 void SensorReaderApplication::defineOptions(OptionSet& options)
 {
 	ServerApplication::defineOptions(options);
 
-	options.addOption(
+    options.addOption(
         Option("help", "h", "Display argument help information")
             .required(false)
-			.repeatable(false)
-            .callback(   
-                OptionCallback<SensorReaderApplication>(this, &SensorReaderApplication::handleHelp)));
-
-    options.addOption(
-        Option("port", "p", "Set HTTP server port. Valid value is a number from 1024 to 65535.")
-            .required(false)
             .repeatable(false)
-            .argument("value")
-            .validator(new IntValidator(1024, 65535))
-            .binding("server.port"));
+            .callback(
+                OptionCallback<SensorReaderApplication>(this, &SensorReaderApplication::handleHelp)));
 
     options.addOption(
         Option("devicePin", "s", "Set reader device pin")
             .required(false)
             .repeatable(false)
             .argument("value")
-            .validator(new IntValidator(0, 31))
             .binding("reader.devicePin"));
 
     options.addOption(
@@ -106,13 +89,28 @@ void SensorReaderApplication::defineOptions(OptionSet& options)
             .required(false)
             .repeatable(false)
             .argument("value")
-            .validator(new RegExpValidator("(?i)dht(11|22)"))
             .binding("reader.deviceType"));
-}
 
-void SensorReaderApplication::handleOption(const std::string& name, const std::string& value)
-{
-	ServerApplication::handleOption(name, value);
+    options.addOption(
+        Option("http", "", "Enable http publisher")
+            .required(false)
+            .repeatable(false)
+            .argument("value")
+            .binding("http.enable"));
+
+    options.addOption(
+        Option("httpPort", "", "Set HTTP server port. Valid value is a number from 1024 to 65535.")
+            .required(false)
+            .repeatable(false)
+            .argument("value")
+            .binding("http.port"));
+
+    options.addOption(
+        Option("httpFormat", "", "Set HTTP server data format. Valid value is 'json' or 'string'")
+            .required(false)
+            .repeatable(false)
+            .argument("value")
+            .binding("http.format"));
 }
 
 void SensorReaderApplication::handleHelp(const std::string&, const std::string&)
@@ -130,20 +128,26 @@ int SensorReaderApplication::main(const std::vector<std::string>&)
     }
 
     try {
-        std::uint8_t devicePin = getDevicePin();
-        SensorTypes deviceType = getDeviceType();
-        SensorReader reader(devicePin, deviceType);
+        std::unique_ptr<SensorReader> reader = createSensorReader();
+        reader->run();
 
-        unsigned short port = getServerPort();
-        HttpDataServer server(port, reader.data());
+        std::unique_ptr<HttpDataServer> server;
+        bool httpEnabled = isHttpEnabled();
+        if (httpEnabled) {
+            server = createHttpServer(reader->data());
+        }
 
-        reader.run();
-        server.run();
+        if (server) {
+            server->run();
+        }
 
         waitForTerminationRequest();
 
-        server.shutdown();
-        reader.shutdown();
+        if (server) {
+            server->shutdown();
+        }
+
+        reader->shutdown();
     } catch (const Poco::Exception& e) {
         logger().error(e.displayText());
         return Application::EXIT_SOFTWARE;
@@ -167,41 +171,76 @@ void SensorReaderApplication::displayHelp()
     helpFormatter.format(std::cout);
 }
 
-unsigned short SensorReaderApplication::getServerPort() const
+SensorReader::Ptr SensorReaderApplication::createSensorReader()
 {
-    const Option& option = options().getOption("port");
-
-    Validator* validator = option.validator();
-    poco_check_ptr(validator);
-
-    std::string value = config().getString(option.binding(), DEFAULT_SERVER_PORT);
-    validator->validate(option, value);
-
-    return static_cast<unsigned short>(Poco::NumberParser::parseUnsigned(value));
+    return SensorReader::create(getDevicePin(), getDeviceType());
 }
 
-std::uint8_t SensorReaderApplication::getDevicePin() const
+HttpDataServer::Ptr SensorReaderApplication::createHttpServer(SensorReadableData::Ptr data)
+{
+    return HttpDataServer::create(getHttpPort(), getHttpFormat(), data);
+}
+
+bool SensorReaderApplication::isHttpEnabled() const
+{
+    const Option& option = options().getOption("http");
+    try {
+        return config().getBool(option.binding(), DEFAULT_HTTP_ENABLE);
+    }
+    catch (Poco::SyntaxException&) {
+        throw Poco::InvalidArgumentException(
+            Poco::format("argument for '%s' (%s) must be boolean",
+                         option.fullName(), option.binding()));
+    }
+}
+
+unsigned short SensorReaderApplication::getHttpPort() const
+{
+    const Option& option = options().getOption("httpPort");
+    try {
+        return static_cast<unsigned short>(config().getUInt(option.binding(), DEFAULT_HTTP_PORT));
+    }
+    catch (Poco::SyntaxException&) {
+        throw Poco::InvalidArgumentException(
+            Poco::format("argument for '%s' (%s) must be an integer",
+                         option.fullName(), option.binding()));
+    }
+}
+
+std::string SensorReaderApplication::getHttpFormat() const
+{
+    const Option& option = options().getOption("httpFormat");
+    std::string value = config().getString(option.binding(), DEFAULT_HTTP_FORMAT);
+    std::regex re("^json|string$", std::regex_constants::icase);
+    if (!std::regex_match(value, re)) {
+        throw Poco::InvalidArgumentException(
+            Poco::format("argument for '%s' (%s) must equals 'json' or 'string'",
+                         option.fullName(), option.binding()));
+    }
+    return value;
+}
+
+device::PinNum SensorReaderApplication::getDevicePin() const
 {
     const Option& option = options().getOption("devicePin");
-
-    Validator* validator = option.validator();
-    poco_check_ptr(validator);
-
-    std::string value = config().getString(option.binding(), DEFAULT_DEVICE_PIN);
-    validator->validate(option, value);
-
-    return static_cast<std::uint8_t>(Poco::NumberParser::parseUnsigned(value));
+    try {
+        return static_cast<device::PinNum>(config().getUInt(option.binding(), DEFAULT_DEVICE_PIN));
+    } catch (Poco::SyntaxException&) {
+        throw Poco::InvalidArgumentException(
+            Poco::format("argument for '%s' (%s) must be an integer",
+                         option.fullName(), option.binding()));
+    }
 }
 
 SensorTypes SensorReaderApplication::getDeviceType() const
 {
     const Option& option = options().getOption("deviceType");
-
-    Validator* validator = option.validator();
-    poco_check_ptr(validator);
-
     std::string value = config().getString(option.binding(), DEFAULT_DEVICE_TYPE);
-    validator->validate(option, value);
-
+    std::regex re("^dht(11|22)$", std::regex_constants::icase);
+    if (!std::regex_match(value, re)) {
+        throw Poco::InvalidArgumentException(
+            Poco::format("argument for '%s' (%s) must equals valid device type",
+                         option.fullName(), option.binding()));
+    }
     return sensor::translateSensorTypeFromString(value);
 }

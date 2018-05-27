@@ -11,6 +11,7 @@
 #include <thread>
 #include <atomic>
 #include <memory>
+#include <utility>
 
 #include "device/DeviceCommon.hpp"
 
@@ -26,6 +27,8 @@ namespace sensor {
  */
 class SensorReader {
 public:
+    using Ptr = std::unique_ptr<SensorReader>;
+
     SensorReader(device::PinNum pin, SensorTypes type);
     virtual ~SensorReader();
 
@@ -34,6 +37,14 @@ public:
     inline bool isRunned() const;
     void run();
     void shutdown();
+
+public:
+
+    template<typename ...As>
+    static inline Ptr create(As&&... args)
+    {
+        return std::make_unique<SensorReader>(std::forward<As>(args)...);
+    }
 
 private:
     void handler();

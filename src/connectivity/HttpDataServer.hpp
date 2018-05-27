@@ -9,6 +9,7 @@
 #define HTTPDATASERVER_HPP_
 
 #include <memory>
+#include <utility>
 
 #include <Poco/Net/HTTPServer.h>
 
@@ -23,7 +24,10 @@ namespace connectivity {
  */
 class HttpDataServer : public common::Runnable {
 public:
+    using Ptr = std::unique_ptr<HttpDataServer>;
+
     HttpDataServer(unsigned short port,
+                   const std::string& format,
                    sensor::SensorReadableData::Ptr data);
     ~HttpDataServer() override;
 
@@ -32,11 +36,19 @@ public:
     void shutdown() override;
 
 public:
+
+    template<typename ...As>
+    static inline Ptr create(As... args)
+    {
+        return std::make_unique<HttpDataServer>(std::forward<As>(args)...);
+    }
+
+public:
     HttpDataServer(const HttpDataServer&) = delete;
     HttpDataServer& operator=(const HttpDataServer&) = delete;
 
 private:
-    formatter::Formatter::Ptr getFormatter();
+    formatter::Formatter::Ptr getFormatter(const std::string& format);
 
 private:
     std::unique_ptr<Poco::Net::HTTPServer> _server;

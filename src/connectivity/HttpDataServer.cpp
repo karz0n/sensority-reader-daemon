@@ -8,7 +8,7 @@
 #include "HttpDataServer.hpp"
 #include "HttpDataRequestHandlerFactory.hpp"
 
-#include "formatter/JsonFormatter.hpp"
+#include "formatter/FormatterFactory.hpp"
 
 #include <Poco/Net/HTTPServerParams.h>
 
@@ -21,11 +21,12 @@ namespace connectivity {
 
 HttpDataServer::HttpDataServer(
         unsigned short p,
+        const std::string& f,
         SensorReadableData::Ptr d)
     : _runned(false)
 {
     _server = std::make_unique<HTTPServer>(
-        new HttpDataRequestHandlerFactory(d, getFormatter()),
+        new HttpDataRequestHandlerFactory(d, getFormatter(f)),
         p,
         new HTTPServerParams);
 }
@@ -53,9 +54,9 @@ void HttpDataServer::shutdown()
     _runned = false;
 }
 
-formatter::Formatter::Ptr HttpDataServer::getFormatter()
+formatter::Formatter::Ptr HttpDataServer::getFormatter(const std::string& format)
 {
-    return formatter::Formatter::create<formatter::JsonFormatter>();
+    return formatter::FormatterFactory::create(format);
 }
 
 } // namespace connectivity {
