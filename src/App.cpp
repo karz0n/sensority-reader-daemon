@@ -1,14 +1,14 @@
 /*
- * SensorReaderApplication.cpp
+ * App.cpp
  *
  *  Created on: Mar 22, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#include "SensorReaderApplication.hpp"
+#include "App.hpp"
 
-#include <regex>
 #include <iostream>
+#include <regex>
 #include <exception>
 
 #include <Poco/Format.h>
@@ -16,6 +16,8 @@
 #include <Poco/Util/Option.h>
 #include <Poco/Util/OptionCallback.h>
 #include <Poco/Util/HelpFormatter.h>
+
+#include "common/Thread.hpp"
 
 using Poco::Util::Application;
 using Poco::Util::OptionSet;
@@ -53,20 +55,20 @@ static const int DEFAULT_HTTP_PORT = 8080;
  */
 static const std::string DEFAULT_HTTP_FORMAT {"json"};
 
-SensorReaderApplication::SensorReaderApplication()
+App::App()
 	: _helpRequested(false)
 { }
 
-SensorReaderApplication::~SensorReaderApplication()
+App::~App()
 { }
 
-void SensorReaderApplication::initialize(Application& self)
+void App::initialize(Application& self)
 {
 	loadConfiguration();
 	ServerApplication::initialize(self);
 }
 
-void SensorReaderApplication::defineOptions(OptionSet& options)
+void App::defineOptions(OptionSet& options)
 {
 	ServerApplication::defineOptions(options);
 
@@ -75,7 +77,7 @@ void SensorReaderApplication::defineOptions(OptionSet& options)
             .required(false)
             .repeatable(false)
             .callback(
-                OptionCallback<SensorReaderApplication>(this, &SensorReaderApplication::handleHelp)));
+                OptionCallback<App>(this, &App::handleHelp)));
 
     options.addOption(
         Option("devicePin", "s", "Set reader device pin")
@@ -113,7 +115,7 @@ void SensorReaderApplication::defineOptions(OptionSet& options)
             .binding("http.format"));
 }
 
-void SensorReaderApplication::handleHelp(const std::string&, const std::string&)
+void App::handleHelp(const std::string&, const std::string&)
 {
     _helpRequested = true;
 
@@ -121,7 +123,7 @@ void SensorReaderApplication::handleHelp(const std::string&, const std::string&)
     stopOptionsProcessing();
 }
 
-int SensorReaderApplication::main(const std::vector<std::string>&)
+int App::main(const std::vector<std::string>&)
 {
     if (_helpRequested) {
         return ServerApplication::EXIT_OK;
@@ -129,7 +131,8 @@ int SensorReaderApplication::main(const std::vector<std::string>&)
 
     try {
         std::unique_ptr<SensorReader> reader = createSensorReader();
-        reader->run();
+
+        common::Thread thread(*reader);
 
         std::unique_ptr<HttpDataServer> server;
         bool httpEnabled = isHttpEnabled();
@@ -147,7 +150,7 @@ int SensorReaderApplication::main(const std::vector<std::string>&)
             server->shutdown();
         }
 
-        reader->shutdown();
+        reader->stop();
     } catch (const Poco::Exception& e) {
         logger().error(e.displayText());
         return Application::EXIT_SOFTWARE;
@@ -162,7 +165,7 @@ int SensorReaderApplication::main(const std::vector<std::string>&)
     return Application::EXIT_OK;
 }
 
-void SensorReaderApplication::displayHelp()
+void App::displayHelp()
 {
     HelpFormatter helpFormatter(options());
     helpFormatter.setCommand(commandName());
@@ -171,17 +174,17 @@ void SensorReaderApplication::displayHelp()
     helpFormatter.format(std::cout);
 }
 
-SensorReader::Ptr SensorReaderApplication::createSensorReader()
+SensorReader::Ptr App::createSensorReader()
 {
     return SensorReader::create(getDevicePin(), getDeviceType());
 }
 
-HttpDataServer::Ptr SensorReaderApplication::createHttpServer(SensorReadableData::Ptr data)
+HttpDataServer::Ptr App::createHttpServer(SensorReadableData::Ptr data)
 {
     return HttpDataServer::create(getHttpPort(), getHttpFormat(), data);
 }
 
-bool SensorReaderApplication::isHttpEnabled() const
+bool App::isHttpEnabled() const
 {
     const Option& option = options().getOption("http");
     try {
@@ -194,7 +197,7 @@ bool SensorReaderApplication::isHttpEnabled() const
     }
 }
 
-unsigned short SensorReaderApplication::getHttpPort() const
+unsigned short App::getHttpPort() const
 {
     const Option& option = options().getOption("httpPort");
     try {
@@ -207,7 +210,7 @@ unsigned short SensorReaderApplication::getHttpPort() const
     }
 }
 
-std::string SensorReaderApplication::getHttpFormat() const
+std::string App::getHttpFormat() const
 {
     const Option& option = options().getOption("httpFormat");
     std::string value = config().getString(option.binding(), DEFAULT_HTTP_FORMAT);
@@ -220,7 +223,7 @@ std::string SensorReaderApplication::getHttpFormat() const
     return value;
 }
 
-device::PinNum SensorReaderApplication::getDevicePin() const
+device::PinNum App::getDevicePin() const
 {
     const Option& option = options().getOption("devicePin");
     try {
@@ -232,7 +235,7 @@ device::PinNum SensorReaderApplication::getDevicePin() const
     }
 }
 
-SensorTypes SensorReaderApplication::getDeviceType() const
+SensorTypes App::getDeviceType() const
 {
     const Option& option = options().getOption("deviceType");
     std::string value = config().getString(option.binding(), DEFAULT_DEVICE_TYPE);
@@ -244,3 +247,8 @@ SensorTypes SensorReaderApplication::getDeviceType() const
     }
     return sensor::translateSensorTypeFromString(value);
 }
+
+//
+// Define main entry
+//
+POCO_SERVER_MAIN(App)

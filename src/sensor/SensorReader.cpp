@@ -12,48 +12,27 @@
 #include <Poco/Exception.h>
 #include <Poco/Util/Application.h>
 
-#include "sensor/SensorDataStorage.hpp"
-#include "sensor/SensorReadingStrategyFactory.hpp"
+#include "SensorReadingStrategy.hpp"
+#include "SensorReadingStrategyFactory.hpp"
 
 using Poco::Util::Application;
 
 namespace sensor {
 
 SensorReader::SensorReader(device::PinNum p, SensorTypes t)
-    : _pin(p), _type(t), _runned(false)
+    : _pin(p), _type(t)
 {
-    _strategy = SensorReadingStrategyFactory::createReadingStrategy(t);
     _storage = SensorDataStorage::create();
 }
 
-SensorReader::~SensorReader()
+void SensorReader::doStart()
 {
-    if (isRunned()) {
-        shutdown();
-    }
-}
+    SensorReadingStrategy::Ptr strategy = SensorReadingStrategyFactory::createReadingStrategy(_type);
 
-void SensorReader::run()
-{
-    _thread = std::thread(&SensorReader::handler, this);
-    _runned = true;
-}
-
-void SensorReader::shutdown()
-{
-    if (_thread.joinable()) {
-        _thread.join();
-    }
-    _runned = false;
-}
-
-void SensorReader::handler()
-{
-    _strategy->setup();
-    while(_runned) {
+    strategy->setup();
+    while(isProceed()) {
         try {
-            auto data = _strategy->read(_pin, _type);
-            _storage->update(std::move(data));
+            _storage->update(strategy->read(_pin, _type));
         }
         catch (const Poco::Exception& e) {
             Application& app = Application::instance();
@@ -68,11 +47,17 @@ void SensorReader::handler()
             app.logger().error("Unknown error");
         }
 
-        if (_strategy->needPause(_type)) {
-            _strategy->pause(_type);
+        if (strategy->needPause(_type)) {
+            sleepFor(strategy->pauseLength(_type));
         }
     }
-    _strategy->cleanup();
+    strategy->cleanup();
+}
+
+void SensorReader::doStop()
+{
+    // TODO:
+    //    Reset storage to empty state
 }
 
 } // namespace sensor

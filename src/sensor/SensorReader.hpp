@@ -8,15 +8,14 @@
 #ifndef SENSORREADER_HPP_
 #define SENSORREADER_HPP_
 
-#include <thread>
-#include <atomic>
 #include <memory>
 #include <utility>
+
+#include "common/ThreadTarget.hpp"
 
 #include "device/DeviceCommon.hpp"
 
 #include "SensorCommon.hpp"
-#include "SensorReadingStrategy.hpp"
 #include "SensorReadableData.hpp"
 #include "SensorDataStorage.hpp"
 
@@ -25,47 +24,41 @@ namespace sensor {
 /**
  * Sensor reader class
  */
-class SensorReader {
+class SensorReader : public common::ThreadTarget {
 public:
     using Ptr = std::unique_ptr<SensorReader>;
 
     SensorReader(device::PinNum pin, SensorTypes type);
-    virtual ~SensorReader();
 
+    /**
+     * @brief return readable data
+     * @return readable data object
+     */
     inline SensorReadableData::Ptr data() const;
 
-    inline bool isRunned() const;
-    void run();
-    void shutdown();
-
 public:
-
+    /**
+     * Factory method
+     */
     template<typename ...As>
     static inline Ptr create(As&&... args)
     {
         return std::make_unique<SensorReader>(std::forward<As>(args)...);
     }
 
-private:
-    void handler();
+protected:
+    void doStart() override;
+    void doStop() override;
 
 private:
     device::PinNum _pin;
     SensorTypes _type;
-    std::unique_ptr<SensorReadingStrategy> _strategy;
     SensorDataStorage::Ptr _storage;
-    std::thread _thread;
-    std::atomic<bool> _runned;
 };
 
 //
 // Inlines
 //
-
-bool SensorReader::isRunned() const
-{
-    return _runned;
-}
 
 SensorReadableData::Ptr SensorReader::data() const
 {

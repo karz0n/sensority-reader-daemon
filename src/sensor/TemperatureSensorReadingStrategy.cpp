@@ -7,10 +7,7 @@
 
 #include "TemperatureSensorReadingStrategy.hpp"
 
-#include <cstdint>
 #include <array>
-#include <thread>
-#include <chrono>
 
 #include <Poco/Exception.h>
 
@@ -24,7 +21,14 @@ using common::System;
 using device::DeviceLibrary;
 using device::DeviceGpio;
 
+/**
+ * @brief DHT_MAXCOUNT
+ */
 static const int DHT_MAXCOUNT = 32000;
+
+/**
+ * @brief DHT_PULSES
+ */
 static const int DHT_PULSES = 41;
 
 namespace sensor {
@@ -39,9 +43,9 @@ void TemperatureSensorReadingStrategy::cleanup()
     DeviceLibrary::instance().cleanup();
 }
 
-void TemperatureSensorReadingStrategy::pause(SensorTypes)
+std::chrono::milliseconds TemperatureSensorReadingStrategy::pauseLength(SensorTypes)
 {
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    return std::chrono::milliseconds(2000);
 }
 
 SensorData::Ptr TemperatureSensorReadingStrategy::read(device::PinNum pin, SensorTypes type)

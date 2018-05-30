@@ -1,12 +1,12 @@
 /*
- * SensorReaderApplication.hpp
+ * App.hpp
  *
  *  Created on: Mar 22, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
-#ifndef SENSORREADERAPPLICATION_HPP_
-#define SENSORREADERAPPLICATION_HPP_
+#ifndef APP_HPP_
+#define APP_HPP_
 
 #include <string>
 
@@ -18,12 +18,12 @@
 #include "sensor/SensorReader.hpp"
 
 /**
- * @brief The SensorReaderApplication class
+ * @brief The App class
  */
-class SensorReaderApplication: public Poco::Util::ServerApplication {
+class App: public Poco::Util::ServerApplication {
 public:
-	SensorReaderApplication();
-    ~SensorReaderApplication() override;
+    App();
+    ~App() override;
 
 protected:
 	void initialize(Poco::Util::Application& self) override;
@@ -51,4 +51,4 @@ private:
 	bool _helpRequested;
 };
 
-#endif /* SENSORREADERAPPLICATION_HPP_ */
+#endif /* APP_HPP_ */

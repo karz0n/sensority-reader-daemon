@@ -8,10 +8,6 @@
 #ifndef TEMPERATURESENSORREADINGSTRATEGY_HPP_
 #define TEMPERATURESENSORREADINGSTRATEGY_HPP_
 
-#include <memory>
-
-#include "device/DeviceCommon.hpp"
-
 #include "SensorData.hpp"
 #include "SensorReadingStrategy.hpp"
 
@@ -21,7 +17,7 @@ class TemperatureSensorReadingStrategy : public SensorReadingStrategy {
 public:
     void setup() override;
     void cleanup() override;
-    void pause(SensorTypes type) override;
+    std::chrono::milliseconds pauseLength(SensorTypes type) override;
     inline bool needPause(SensorTypes type) const override;
     SensorData::Ptr read(device::PinNum pin, SensorTypes type) override;
 };

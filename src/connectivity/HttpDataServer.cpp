@@ -1,16 +1,17 @@
 /*
- * HttpSensorReaderServer.cpp
+ * HttpDataServer.cpp
  *
  *  Created on: Feb 21, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
  */
 
 #include "HttpDataServer.hpp"
-#include "HttpDataRequestHandlerFactory.hpp"
+
+#include <Poco/Net/HTTPServerParams.h>
 
 #include "formatter/FormatterFactory.hpp"
 
-#include <Poco/Net/HTTPServerParams.h>
+#include "HttpDataRequestHandlerFactory.hpp"
 
 using Poco::Net::HTTPServerParams;
 using Poco::Net::HTTPServer;
@@ -43,6 +44,7 @@ void HttpDataServer::run()
     poco_assert_msg(!isRunned(), "Http server has already been run");
 
     _server->start();
+
     _runned = true;
 }
 
@@ -51,6 +53,7 @@ void HttpDataServer::shutdown()
     poco_assert_msg(isRunned(), "Http server has already been stopped");
 
     _server->stopAll(true);
+
     _runned = false;
 }
 

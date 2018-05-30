@@ -19,9 +19,8 @@ public:
     Runnable() = default;
     virtual ~Runnable() = default;
 
-    virtual void run() = 0;
     virtual bool isRunned() const = 0;
-    virtual void shutdown() = 0;
+    virtual void run() = 0;
 };
 
 } // namespace common

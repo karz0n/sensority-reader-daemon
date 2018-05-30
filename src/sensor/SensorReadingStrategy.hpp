@@ -9,7 +9,10 @@
 #define SENSORREADINGSTRATEGY_HPP_
 
 #include <memory>
+#include <chrono>
 #include <utility>
+
+#include "device/DeviceCommon.hpp"
 
 #include "SensorCommon.hpp"
 #include "SensorData.hpp"
@@ -39,11 +42,11 @@ public:
     virtual void cleanup() = 0;
 
     /**
-     * @brief Pause before reading.
-     * Called after each read cycle has performed.
-     * @param type device type.
+     * @brief Return amount of time in milliseconds.
+     * Called to obtain amount of time which need to pause after each read cycle.
+     * @param amount of time.
      */
-    virtual void pause(SensorTypes type) = 0;
+    virtual std::chrono::milliseconds pauseLength(SensorTypes type) = 0;
 
     /**
      * @brief Indicate if pause is necessary.
@@ -63,14 +66,14 @@ public:
      * @param type device type.
      * @return The pointer of reading result.
      */
-    virtual SensorData::Ptr read(std::uint8_t pin, SensorTypes type) = 0;
+    virtual SensorData::Ptr read(device::PinNum pin, SensorTypes type) = 0;
 
  public:
     /**
      * Sensor reading strategy factory method
      */
     template <typename T, typename ...As>
-    static Ptr create(As... args)
+    static Ptr create(As&&... args)
     {
         return std::make_unique<T>(std::forward<As>(args)...);
     }

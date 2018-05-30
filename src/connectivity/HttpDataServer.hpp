@@ -1,5 +1,5 @@
 /*
- * HttpSensorReaderServer.hpp
+ * HttpDataServer.hpp
  *
  *  Created on: Feb 21, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
@@ -9,6 +9,7 @@
 #define HTTPDATASERVER_HPP_
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include <Poco/Net/HTTPServer.h>
@@ -31,12 +32,19 @@ public:
                    sensor::SensorReadableData::Ptr data);
     ~HttpDataServer() override;
 
-    inline bool isRunned() const override;
-    void run() override;
-    void shutdown() override;
+    /**
+     * @brief shutdown http server
+     */
+    void shutdown();
 
 public:
+    inline bool isRunned() const override;
+    void run() override;
 
+public:
+    /**
+     * Factory method
+     */
     template<typename ...As>
     static inline Ptr create(As... args)
     {

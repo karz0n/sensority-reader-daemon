@@ -6,9 +6,8 @@ add_subdirectory(sensor)
 
 target_sources(${PROJECT_NAME}
     PRIVATE
-        "${PROJECT_SOURCE_DIR}/src/main.cpp"
-        "${PROJECT_SOURCE_DIR}/src/SensorReaderApplication.cpp"
-        "${PROJECT_SOURCE_DIR}/src/SensorReaderApplication.hpp")
+        "${PROJECT_SOURCE_DIR}/src/App.cpp"
+        "${PROJECT_SOURCE_DIR}/src/App.hpp")
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE

@@ -56,7 +56,7 @@ PinLevels DeviceGpio::read()
 
 void DeviceGpio::write(PinLevels level)
 {
-    bcm2835_gpio_write(_pin, static_cast<std::uint8_t>(level));
+    bcm2835_gpio_write(_pin, static_cast<uint8_t>(level));
 }
 
 unsigned long long DeviceGpio::count(PinLevels level, unsigned long long max)

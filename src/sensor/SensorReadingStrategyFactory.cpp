@@ -1,5 +1,5 @@
 /*
- * SensorReadingStrategy.h
+ * SensorReadingStrategy.cpp
  *
  *  Created on: Feb 21, 2018
  *      Author: Denys Asauliak <d.asauliak@gmail.com>
