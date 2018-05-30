@@ -64,7 +64,6 @@ SensorData::Ptr TemperatureSensorReadingStrategy::read(device::PinNum pin, Senso
         gpio->write(device::PinLevels::low);
         gpio->delay(type == SensorTypes::dht11 ? 18 : 15);
         gpio->dir(device::PinDirs::in);
-        for (volatile int i = 0; i < 50; ++i);
 
         gpio->count(device::PinLevels::high, DHT_MAXCOUNT);
 

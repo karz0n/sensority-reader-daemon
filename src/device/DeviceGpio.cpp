@@ -61,7 +61,7 @@ void DeviceGpio::write(PinLevels level)
 
 unsigned long long DeviceGpio::count(PinLevels level, unsigned long long max)
 {
-    unsigned long long count = 0;
+    volatile unsigned long long count = 0;
     while (read() == level) {
         if (count++ == max) {
             throw Poco::LogicException("Max count reached");

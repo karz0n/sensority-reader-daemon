@@ -15,6 +15,9 @@
 
 namespace device {
 
+/**
+ * @brief Default max count value
+ */
 const unsigned long long DEVICE_MAX_COUNT = std::numeric_limits<unsigned long long>::max();
 
 /**
