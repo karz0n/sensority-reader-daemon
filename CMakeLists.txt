@@ -31,7 +31,6 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
 
 find_package(Threads REQUIRED)
 find_package(Bcm2835 REQUIRED)
-find_package(Mosquitto REQUIRED)
 find_package(Poco REQUIRED Util JSON XML Net Foundation)
 
 #------------------------------------------------------------------------------
