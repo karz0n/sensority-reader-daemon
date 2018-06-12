@@ -1,12 +1,11 @@
-/*
- * SensorReadingStrategy.hpp
- *
- *  Created on: Feb 21, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
- */
+/*!
+* \file SensorReadingStrategy.hpp
+* \author Denys Asauliak <d.asauliak@gmail.com>
+* \date Feb 21, 2018
+*/
 
-#ifndef SENSORREADINGSTRATEGY_HPP_
-#define SENSORREADINGSTRATEGY_HPP_
+#ifndef SENSORREADINGSTRATEGY_HPP
+#define SENSORREADINGSTRATEGY_HPP
 
 #include <memory>
 #include <chrono>
@@ -19,32 +18,38 @@
 
 namespace sensor {
 
+/*!
+ * \addtogroup sensor
+ * @{
+ */
+
 /**
  * @brief The SensorReadingStrategy class.
  * Base class of reading strategies.
  */
 class SensorReadingStrategy {
 public:
-    using Ptr = std::unique_ptr<SensorReadingStrategy>;
+    using Ptr = std::unique_ptr<SensorReadingStrategy>; //!< Type of pointer to the class object.
 
     virtual ~SensorReadingStrategy() = default;
 
-    /**
-     * @brief Setup environment.
-     * Called once before reading will start.
+    /*!
+     * \brief Setup environment.
+     * \details Called once before reading will start.
      */
     virtual void setup() = 0;
 
-    /**
-     * @brief Cleanup environment.
-     * Called once after reading has finished.
+    /*!
+     * \brief Cleanup environment.
+     * \details Called once after reading has finished.
      */
     virtual void cleanup() = 0;
 
-    /**
-     * @brief Return amount of time in milliseconds.
-     * Called to obtain amount of time which need to pause after each read cycle.
-     * @param amount of time.
+    /*!
+     * \brief Return amount of time in milliseconds.
+     * \details Called to obtain amount of time which need to pause after each read cycle.
+     * \param type device type.
+     * \return amount of time.
      */
     virtual std::chrono::milliseconds pauseLength(SensorTypes type) = 0;
 
@@ -53,23 +58,25 @@ public:
      * @param type device type.
      * @return The flag that indicate if pause is necessary.
      */
+
+    /*!
+     * \brief Indicate if pause is necessary.
+     * \param type device type.
+     * \return flag which indicate that pause is necessary.
+     */
     virtual bool needPause(SensorTypes type) const = 0;
 
-    /**
-     * Read data
-     * (called on each step of reading cycle)
-     */
-    /**
-     * @brief Read data.
-     * Called on each step of reading cycle.
-     * @param pin pin number.
-     * @param type device type.
-     * @return The pointer of reading result.
+    /*!
+     * \brief Read data.
+     * \details Called on each step of reading cycle.
+     * \param pin pin number.
+     * \param type device type.
+     * \return the pointer to the data object.
      */
     virtual SensorData::Ptr read(device::PinNum pin, SensorTypes type) = 0;
 
  public:
-    /**
+    /*!
      * Sensor reading strategy factory method
      */
     template <typename T, typename ...As>
@@ -79,6 +86,8 @@ public:
     }
 };
 
+/*! @} */
+
 } // namespace sensor
 
-#endif /* SENSORREADINGSTRATEGY_HPP_ */
+#endif // SENSORREADINGSTRATEGY_HPP

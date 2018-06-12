@@ -1,8 +1,7 @@
-/*
- * Thread.cpp
- *
- *  Created on: May 27, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file Thread.cpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date May 27, 2018
  */
 
 #include "Thread.hpp"

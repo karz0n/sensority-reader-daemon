@@ -1,12 +1,11 @@
-/*
- * Thread.hpp
- *
- *  Created on: May 27, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file Thread.hpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date May 27, 2018
  */
 
-#ifndef THREAD_HPP_
-#define THREAD_HPP_
+#ifndef THREAD_HPP
+#define THREAD_HPP
 
 #include <thread>
 
@@ -14,26 +13,38 @@
 
 namespace common {
 
+/*!
+ * \addtogroup common
+ * @{
+ */
+
+/*!
+ * \brief The Thread class.
+ * \details Basic thread class for thread.
+ */
 class Thread
 {
 public:
-    Thread();
-    Thread(Runnable& target);
+    Thread();                   //!< Default ctor.
+    Thread(Runnable& target);   //!< Construct and start thread using given target.
+
     virtual ~Thread();
 
-    /**
-     * @brief start thread with given target
+    /*!
+     * \brief Start thread with given target.
+     * \param target runnable target.
      */
     void start(Runnable& target);
 
-    /**
-     * @brief isJoinable
-     * @return
+    /*!
+     * \brief Return flag of thread possibility to be joined in another thread.
+     * \return flag of thread possibility to be joined.
      */
     bool isJoinable() const;
 
-    /**
-     * @brief join
+    /*!
+     * \brief Join this thread in another thread.
+     * \details Blocking calling thread until this thread will not stop.
      */
     void join();
 
@@ -41,6 +52,8 @@ private:
     std::thread _thread;
 };
 
+/*! @} */
+
 } // namespace common
 
-#endif // THREAD_HPP_
+#endif // THREAD_HPP

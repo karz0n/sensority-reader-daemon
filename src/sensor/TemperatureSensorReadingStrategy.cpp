@@ -1,9 +1,8 @@
-/*
- * TemperatureSensorReadingStrategy.cpp
- *
- *  Created on: Feb 21, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
- */
+/*!
+* \file TemperatureSensorReadingStrategy.cpp
+* \author Denys Asauliak <d.asauliak@gmail.com>
+* \date Feb 21, 2018
+*/
 
 #include "TemperatureSensorReadingStrategy.hpp"
 

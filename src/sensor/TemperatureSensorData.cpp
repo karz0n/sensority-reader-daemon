@@ -1,9 +1,8 @@
-/*
- * TemperatureSensorDataStorage.cpp
- *
- *  Created on: Feb 24, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
- */
+/*!
+* \file TemperatureSensorData.cpp
+* \author Denys Asauliak <d.asauliak@gmail.com>
+* \date Feb 24, 2018
+*/
 
 #include "TemperatureSensorData.hpp"
 

@@ -1,0 +1,3 @@
+/*! \defgroup formatter Formatter module
+    Formatter module defines formatters for different formats.
+*/

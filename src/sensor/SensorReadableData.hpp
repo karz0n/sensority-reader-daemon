@@ -1,12 +1,11 @@
-/*
- * SensorReadableData.hpp
- *
- *  Created on: Mar 23, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file SensorReadableData.hpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date Mar 23, 2018
  */
 
-#ifndef SENSORREADABLEDATA_HPP_
-#define SENSORREADABLEDATA_HPP_
+#ifndef SENSORREADABLEDATA_HPP
+#define SENSORREADABLEDATA_HPP
 
 #include <memory>
 #include <string>
@@ -15,12 +14,17 @@
 
 namespace sensor {
 
-/**
- * @brief The SensorReadableData class
+/*!
+ * \addtogroup sensor
+ * @{
+ */
+
+/*!
+ * \brief The SensorReadableData class.
  */
 class SensorReadableData {
 public:
-    using Ptr = std::shared_ptr<SensorReadableData>;
+    using Ptr = std::shared_ptr<SensorReadableData>;    //!< Type of pointer to the class.
 
     virtual ~SensorReadableData() = default;
 
@@ -32,6 +36,8 @@ public:
     virtual std::string format(const formatter::Formatter& formatter) const = 0;
 };
 
+/*! @} */
+
 } // namespace sensor
 
-#endif // SENSORREADABLEDATA_HPP_
+#endif // SENSORREADABLEDATA_HPP

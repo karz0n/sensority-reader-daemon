@@ -12,6 +12,8 @@ project(sensority-reader-daemon
     LANGUAGES
         CXX)
 
+option(BUILD_DOC "Build documentation" ON)
+
 #------------------------------------------------------------------------------
 # Toolchain Configuration
 #------------------------------------------------------------------------------
@@ -31,7 +33,15 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
 
 find_package(Threads REQUIRED)
 find_package(Bcm2835 REQUIRED)
-find_package(Poco REQUIRED Util JSON XML Net Foundation)
+find_package(Poco
+    REQUIRED
+        Util JSON XML Net Foundation)
+
+if(BUILD_DOC)
+    find_package(Doxygen
+        COMPONENTS
+            dot)
+endif()
 
 #------------------------------------------------------------------------------
 # Target Configuration
@@ -55,3 +65,4 @@ target_link_libraries(${PROJECT_NAME}
     ${Poco_LIBRARIES})
 
 add_subdirectory(src)
+add_subdirectory(doc)

@@ -1,8 +1,7 @@
-/*
- * SensorDataStorage.cpp
- *
- *  Created on: Feb 28, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file SensorDataStorage.cpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date Feb 28, 2018
  */
 
 #include "SensorDataStorage.hpp"

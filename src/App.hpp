@@ -1,24 +1,23 @@
-/*
- * App.hpp
- *
- *  Created on: Mar 22, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
- */
+/*!
+* \file App.hpp
+* \author Denys Asauliak <d.asauliak@gmail.com>
+* \date Mar 22, 2018
+*/
 
-#ifndef APP_HPP_
-#define APP_HPP_
+#ifndef APP_HPP
+#define APP_HPP
 
 #include <string>
 
 #include <Poco/Util/ServerApplication.h>
 
-#include "device/DeviceCommon.hpp"
 #include "connectivity/HttpDataServer.hpp"
+#include "device/DeviceCommon.hpp"
 #include "sensor/SensorCommon.hpp"
 #include "sensor/SensorReader.hpp"
 
-/**
- * @brief The App class
+/*!
+ * \brief The App class
  */
 class App: public Poco::Util::ServerApplication {
 public:
@@ -26,12 +25,31 @@ public:
     ~App() override;
 
 protected:
+    /*!
+     * \brief Initialize application.
+     * \param self reference to the application object.
+     */
 	void initialize(Poco::Util::Application& self) override;
+
+    /*!
+     * \brief Define option set.
+     * \param options reference to the options collection.
+     */
 	void defineOptions(Poco::Util::OptionSet& options) override;
 
+    /*!
+     * \brief Main method of application.
+     * \param args arguments of the application.
+     * \return exit code.
+     */
     int main(const std::vector<std::string>& args) override;
 
 protected:
+    /*!
+     * \brief Handle application help
+     * \param name option name.
+     * \param value option value.
+     */
     void handleHelp(const std::string& name, const std::string& value);
 
 private:
@@ -51,4 +69,4 @@ private:
 	bool _helpRequested;
 };
 
-#endif /* APP_HPP_ */
+#endif // APP_HPP

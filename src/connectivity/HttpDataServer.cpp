@@ -1,8 +1,7 @@
-/*
- * HttpDataServer.cpp
- *
- *  Created on: Feb 21, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file HttpDataServer.cpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date Feb 21, 2018
  */
 
 #include "HttpDataServer.hpp"
@@ -21,14 +20,14 @@ using sensor::SensorReadableData;
 namespace connectivity {
 
 HttpDataServer::HttpDataServer(
-        unsigned short p,
-        const std::string& f,
-        SensorReadableData::Ptr d)
+        unsigned short port,
+        const std::string& format,
+        sensor::SensorReadableData::Ptr data)
     : _runned(false)
 {
     _server = std::make_unique<HTTPServer>(
-        new HttpDataRequestHandlerFactory(d, getFormatter(f)),
-        p,
+        new HttpDataRequestHandlerFactory(data, getFormatter(format)),
+        port,
         new HTTPServerParams);
 }
 

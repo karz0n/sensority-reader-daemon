@@ -1,12 +1,11 @@
-/*
- * SensorDataStorage.hpp
- *
- *  Created on: Feb 28, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file SensorDataStorage.hpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date Feb 28, 2018
  */
 
-#ifndef SENSORDATASTORAGE_HPP_
-#define SENSORDATASTORAGE_HPP_
+#ifndef SENSORDATASTORAGE_HPP
+#define SENSORDATASTORAGE_HPP
 
 #include <memory>
 #include <mutex>
@@ -21,25 +20,44 @@
 
 namespace sensor {
 
-/**
- * Data storage class
+/*!
+ * \addtogroup sensor
+ * @{
+ */
+
+/*!
+ * \brief The SensorDataStorage class
  */
 class SensorDataStorage : public SensorReadableData {
 public:
-    using Ptr = std::shared_ptr<SensorDataStorage>;
-    using Clock = std::chrono::steady_clock;
-    using TimePoint = std::chrono::time_point<Clock>;
+    using Ptr = std::shared_ptr<SensorDataStorage>;     //!< Type of pointer to the class
+    using Clock = std::chrono::steady_clock;            //!< Type of clock
+    using TimePoint = std::chrono::time_point<Clock>;   //!< Type of time point
 
     SensorDataStorage();
 
     std::string format(const formatter::Formatter& formatter) const override;
 
+    /*!
+     * \brief Update storage value with specified pointer to the data.
+     * \param data pointer to the object.
+     */
     void update(SensorData::Ptr data);
+
+    /*!
+     * \brief Return flag which indicate that data storage is empty.
+     * \return flag of empties state.
+     */
     bool empty() const;
+
+    /*!
+     * \brief Return time point of last update.
+     * \return time point.
+     */
     TimePoint lastUpdate() const;
 
 public:
-    /**
+    /*!
      * Sensor data storage factory method
      */
     template<typename ...As>
@@ -52,15 +70,15 @@ private:
     using ReadLock = std::unique_lock<std::shared_mutex>;
     using WriteLock = std::shared_lock<std::shared_mutex>;
 
-    /**
-     * @brief Lock reading of storage.
-     * @return The read lock monitor.
+    /*!
+     * \brief Lock reading of storage.
+     * \return The read lock monitor.
      */
     ReadLock lockRead() const;
 
-    /**
-     * @brief Lock writing to storage.
-     * @return The write lock monitor.
+    /*!
+     * \brief Lock writing to storage.
+     * \return The write lock monitor.
      */
     WriteLock lockWrite() const;
 
@@ -71,6 +89,8 @@ private:
     TimePoint _lastUpdate;
 };
 
+/*! @} */
+
 } // namespace sensor
 
-#endif /* SENSORDATASTORAGE_HPP_ */
+#endif // SENSORDATASTORAGE_HPP

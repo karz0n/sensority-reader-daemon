@@ -1,58 +1,64 @@
-/*
- * ThreadTarget.hpp
- *
- *  Created on: May 27, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file ThreadTarget.hpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date May 27, 2018
  */
 
-#ifndef THREADTARGET_HPP_
-#define THREADTARGET_HPP_
+#ifndef THREADTARGET_HPP
+#define THREADTARGET_HPP
 
 #include <atomic>
 #include <mutex>
 #include <condition_variable>
 #include <chrono>
 
-#include <iostream>
-
 #include "Runnable.hpp"
 
 namespace common {
 
+/*!
+ * \addtogroup common
+ * @{
+ */
+
+/*!
+ * \brief The ThreadTarget class.
+ */
 class ThreadTarget : public Runnable
 {
 public:
     ThreadTarget();
     ~ThreadTarget() override;
 
-    /**
-     * @brief start
+    /*!
+     * \brief Start thread target.
      */
     void start();
 
-    /**
-     * @brief stop target
+    /*!
+     * \brief Stop thread target.
      */
     void stop();
 
 public:
-    bool isRunned() const override;
-    void run() override;
+    bool isRunned() const override final;
+    void run() override final;
 
 protected:
-    /**
-     * @brief isProceed
-     * @return
+    /*!
+     * \brief Return proceed condition state of thread target.
+     * \return proceed condition state.
      */
     bool isProceed() const;
 
-    /**
-     * @brief offerToStop
+    /*!
+     * \brief Offer thread target to stop.
+     * \details Main cycle of thread target should check ThreadTarget::isProceed method.
      */
     void offerToStop();
 
-    /**
-     * Sleep for specified time duration with termination checking
+    /*!
+     * Sleep for specified time duration with termination checking.
      */
     template<typename Rep, typename Period>
     void sleepFor(const std::chrono::duration<Rep, Period>& duration)
@@ -63,8 +69,8 @@ protected:
         });
     }
 
-    /**
-     * Sleep until specified time point with termination checking
+    /*!
+     * Sleep until specified time point with termination checking.
      */
     template<typename Clock, typename Duration>
     void sleepUntil(const std::chrono::time_point<Clock,Duration>& timePoint)
@@ -76,13 +82,15 @@ protected:
     }
 
 protected:
-    /**
-     * @brief doStart
+    /*!
+     * \brief Start method of thread target.
+     * \details Must be overridden in derived class.
      */
     virtual void doStart() = 0;
 
-    /**
-     * @brief doStop
+    /*!
+     * \brief Stop method of thread target.
+     * \details Must be overridden in derived class.
      */
     virtual void doStop() = 0;
 
@@ -95,6 +103,8 @@ private:
     std::condition_variable _offered;
 };
 
+/*! @} */
+
 } // namespace common
 
-#endif // THREADTARGET_HPP_
+#endif // THREADTARGET_HPP

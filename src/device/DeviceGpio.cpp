@@ -1,8 +1,7 @@
-/*
- * DeviceGpio.cpp
- *
- *  Created on: Mar 4, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file DeviceGpio.cpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date Mar 4, 2018
  */
 
 #include "DeviceGpio.hpp"

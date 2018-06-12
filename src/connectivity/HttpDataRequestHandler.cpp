@@ -1,18 +1,17 @@
-/*
- * HttpDataRequestHandler.cpp
- *
- *  Created on: Mar 22, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file HttpDataRequestHandler.cpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date Mar 22, 2018
  */
 
 #include "HttpDataRequestHandler.hpp"
 
-#include "sensor/SensorReadableData.hpp"
-#include "formatter/Formatter.hpp"
-
 #ifndef NDEBUG
 #include <Poco/Util/Application.h>
 #endif
+
+#include "sensor/SensorReadableData.hpp"
+#include "formatter/Formatter.hpp"
 
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;

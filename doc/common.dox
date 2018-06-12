@@ -1,0 +1,3 @@
+/*! \defgroup common Common module
+    Common module defines common primitives which used in whole project.
+*/

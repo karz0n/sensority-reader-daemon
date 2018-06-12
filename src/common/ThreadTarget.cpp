@@ -1,8 +1,7 @@
-/*
- * ThreadTarget.cpp
- *
- *  Created on: May 27, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file ThreadTarget.cpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date May 27, 2018
  */
 
 #include "ThreadTarget.hpp"

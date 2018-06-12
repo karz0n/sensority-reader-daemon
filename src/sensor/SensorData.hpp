@@ -1,12 +1,11 @@
-/*
- * SensorData.hpp
- *
- *  Created on: Mar 4, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file SensorData.hpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date Mar 4, 2018
  */
 
-#ifndef SENSORDATA_HPP_
-#define SENSORDATA_HPP_
+#ifndef SENSORDATA_HPP
+#define SENSORDATA_HPP
 
 #include <memory>
 #include <utility>
@@ -16,30 +15,38 @@
 
 namespace sensor {
 
-/**
- * @brief The SensorData class
+/*!
+ * \addtogroup sensor
+ * @{
+ */
+
+/*!
+ * \brief The SensorData class.
  */
 class SensorData : public SensorReadableData {
 public:
-    using Ptr = std::unique_ptr<SensorData>;
+    using Ptr = std::unique_ptr<SensorData>; //!< Type of pointer to the class
 
     virtual ~SensorData() = default;
 
-    /**
-     * @brief format values of data object
-     * @param formatter specified formatter
-     * @return formatted string of values
+    /*!
+     * \brief Format data using specified formatter.
+     * \param formatter specific formatter.
+     * \return result of formatting.
      */
-    inline std::string format(const formatter::Formatter& formatter) const;
+    inline std::string format(const formatter::Formatter& formatter) const
+    {
+        return formatter.format(values());
+    }
 
-    /**
-     * @brief return values of data object
-     * @return values
+    /*!
+     * \brief Return values of sensor data.
+     * \return values of sensor data.
      */
     virtual formatter::Formatter::Values values() const = 0;
 
 public:
-    /**
+    /*!
      * Sensor data factory method
      */
     template <typename T, typename ...As>
@@ -49,15 +56,8 @@ public:
     }
 };
 
-//
-// Inlines
-//
-
-std::string SensorData::format(const formatter::Formatter& formatter) const
-{
-    return formatter.format(values());
-}
+/*! @} */
 
 } // namespace sensor
 
-#endif /* SENSORDATA_HPP_ */
+#endif // SENSORDATA_HPP

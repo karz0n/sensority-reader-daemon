@@ -1,9 +1,8 @@
-/*
- * App.cpp
- *
- *  Created on: Mar 22, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
- */
+/*!
+* \file App.cpp
+* \author Denys Asauliak <d.asauliak@gmail.com>
+* \date Mar 22, 2018
+*/
 
 #include "App.hpp"
 

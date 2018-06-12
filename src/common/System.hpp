@@ -1,37 +1,43 @@
-/*
- * System.hpp
- *
- *  Created on: Feb 21, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file System.hpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date Feb 21, 2018
  */
 
-#ifndef SYSTEM_HPP_
-#define SYSTEM_HPP_
+#ifndef SYSTEM_HPP
+#define SYSTEM_HPP
 
 namespace common {
 
-/**
- * @brief The System class
+/*!
+ * \addtogroup common
+ * @{
+ */
+
+/*!
+ * \brief The System class.
  */
 class System {
 public:
-    /**
-     * @brief Return true if we are root
-     * @return flag that indicate root access
+    /*!
+     * \brief Return true if we are root.
+     * \return flag which indicate that we have root access.
      */
     static bool isRoot();
 
-    /**
-     * @brief set high priority of current thread
+    /*!
+     * \brief Set high priority of current thread.
      */
     static void setCurrentThreadHighPriority();
 
-    /**
-     * @brief set default priority of current thread
+    /*!
+     * \brief Set default priority of current thread.
      */
     static void setCurrentThreadDefaultPriority();
 };
 
+/*! @} */
+
 } // namespace common
 
-#endif /* SYSTEM_HPP_ */
+#endif // SYSTEM_HPP

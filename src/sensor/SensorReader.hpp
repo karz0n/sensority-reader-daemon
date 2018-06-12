@@ -1,12 +1,11 @@
-/*
- * SensorReader.hpp
- *
- *  Created on: Feb 28, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file SensorReader.hpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date Feb 28, 2018
  */
 
-#ifndef SENSORREADER_HPP_
-#define SENSORREADER_HPP_
+#ifndef SENSORREADER_HPP
+#define SENSORREADER_HPP
 
 #include <memory>
 #include <utility>
@@ -21,23 +20,36 @@
 
 namespace sensor {
 
+/*!
+ * \addtogroup sensor
+ * @{
+ */
+
 /**
  * Sensor reader class
  */
 class SensorReader : public common::ThreadTarget {
 public:
-    using Ptr = std::unique_ptr<SensorReader>;
+    using Ptr = std::unique_ptr<SensorReader>;  //!< Type of pointer to the class object.
 
+    /*!
+     * \brief Construct sensor reader class.
+     * \param pin number of pin.
+     * \param type type of device.
+     */
     SensorReader(device::PinNum pin, SensorTypes type);
 
-    /**
-     * @brief return readable data
-     * @return readable data object
+    /*!
+     * \brief Return readable data.
+     * \return pointer to the readable data object.
      */
-    inline SensorReadableData::Ptr data() const;
+    inline SensorReadableData::Ptr data() const
+    {
+        return _storage;
+    }
 
 public:
-    /**
+    /*!
      * Factory method
      */
     template<typename ...As>
@@ -56,15 +68,8 @@ private:
     SensorDataStorage::Ptr _storage;
 };
 
-//
-// Inlines
-//
-
-SensorReadableData::Ptr SensorReader::data() const
-{
-    return _storage;
-}
+/*! @} */
 
 } // namespace sensor
 
-#endif /* SENSORREADER_HPP_ */
+#endif // SENSORREADER_HPP

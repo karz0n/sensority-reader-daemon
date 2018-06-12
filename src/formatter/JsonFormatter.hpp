@@ -1,35 +1,36 @@
-/*
- * JsonFormatter.hpp
- *
- *  Created on: Mar 20, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file JsonFormatter.hpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date Mar 20, 2018
  */
 
-#ifndef JSONFORMATTER_HPP_
-#define JSONFORMATTER_HPP_
+#ifndef JSONFORMATTER_HPP
+#define JSONFORMATTER_HPP
 
 #include "Formatter.hpp"
 
 namespace formatter {
 
-/**
- * @brief The JsonFormatter class
+/*!
+ * \addtogroup formatter
+ * @{
+ */
+
+/*!
+ * \brief The JsonFormatter class.
  */
 class JsonFormatter : public Formatter {
 public:
-    inline Formats type() const override;
+    inline Formats type() const override
+    {
+        return Formats::json;
+    }
+
     std::string format(const Values& values) const override;
 };
 
-//
-// Inlines
-//
-
-Formats JsonFormatter::type() const
-{
-    return Formats::json;
-}
+/*! @} */
 
 } // namespace formatter
 
-#endif /* JSONFORMATTER_HPP_ */
+#endif // JSONFORMATTER_HPP

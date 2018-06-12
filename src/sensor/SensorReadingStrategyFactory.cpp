@@ -1,9 +1,8 @@
-/*
- * SensorReadingStrategy.cpp
- *
- *  Created on: Feb 21, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
- */
+/*!
+* \file SensorReadingStrategyFactory.cpp
+* \author Denys Asauliak <d.asauliak@gmail.com>
+* \date Feb 21, 2018
+*/
 
 #include "SensorReadingStrategyFactory.hpp"
 

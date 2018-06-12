@@ -1,35 +1,36 @@
-/*
- * StringFormatter.hpp
- *
- *  Created on: Mar 1, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file StringFormatter.hpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date Mar 1, 2018
  */
 
-#ifndef STRINGFORMATTER_HPP_
-#define STRINGFORMATTER_HPP_
+#ifndef STRINGFORMATTER_HPP
+#define STRINGFORMATTER_HPP
 
 #include "Formatter.hpp"
 
 namespace formatter {
 
-/**
- * @brief The StringFormatter class
+/*!
+ * \addtogroup formatter
+ * @{
+ */
+
+/*!
+ * \brief The StringFormatter class.
  */
 class StringFormatter : public Formatter {
 public:
-    inline Formats type() const override;
+    inline Formats type() const override
+    {
+        return Formats::text;
+    }
+
     std::string format(const Values& values) const override;
 };
 
-//
-// Inlines
-//
-
-Formats StringFormatter::type() const
-{
-    return Formats::text;
-}
+/*! @} */
 
 } // namespace formatter
 
-#endif /* STRINGFORMATTER_HPP_ */
+#endif // STRINGFORMATTER_HPP

@@ -1,27 +1,51 @@
-/*
- * TemperatureSensorData.hpp
- *
- *  Created on: Feb 21, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
- */
+/*!
+* \file TemperatureSensorData.hpp
+* \author Denys Asauliak <d.asauliak@gmail.com>
+* \date Feb 21, 2018
+*/
 
-#ifndef TEMPERATURESENSORDATA_HPP_
-#define TEMPERATURESENSORDATA_HPP_
+#ifndef TEMPERATURESENSORDATA_HPP
+#define TEMPERATURESENSORDATA_HPP
 
 #include "Formatter.hpp"
 #include "SensorData.hpp"
 
 namespace sensor {
 
-/**
- * @brief The TemperatureSensorData class
+/*!
+ * \addtogroup sensor
+ * @{
+ */
+
+/*!
+ * \brief The TemperatureSensorData class
  */
 class TemperatureSensorData : public SensorData {
 public:
+    /*!
+     * \brief Construct temperature sensor data class.
+     * \param temperature value of temperature.
+     * \param humidity value of humidity.
+     */
     TemperatureSensorData(double temperature, double humidity);
 
-    inline double getTemperature();
-    inline double getHumidity();
+    /*!
+     * \brief Return temperature value.
+     * \return temperature value.
+     */
+    inline double getTemperature()
+    {
+        return _temperature;
+    }
+
+    /*!
+     * \brief Return humidity value.
+     * \return humidity value.
+     */
+    inline double getHumidity()
+    {
+        return _humidity;
+    }
 
     formatter::Formatter::Values values() const override;
 
@@ -30,20 +54,8 @@ private:
     double _humidity;
 };
 
-//
-// Inlines
-//
-
-double TemperatureSensorData::getTemperature()
-{
-    return _temperature;
-}
-
-double TemperatureSensorData::getHumidity()
-{
-    return _humidity;
-}
+/*! @} */
 
 } // namespace sensor
 
-#endif /* TEMPERATURESENSORDATA_HPP_ */
+#endif // TEMPERATURESENSORDATA_HPP

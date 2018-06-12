@@ -1,8 +1,7 @@
-/*
- * StringFormatter.cpp
- *
- *  Created on: Mar 1, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file StringFormatter.cpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date Mar 1, 2018
  */
 
 #include "StringFormatter.hpp"

@@ -1,0 +1,3 @@
+/*! \defgroup device Device module
+    Device module defines helper classes to work with device.
+*/

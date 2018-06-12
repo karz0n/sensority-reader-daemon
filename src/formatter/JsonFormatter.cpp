@@ -1,8 +1,7 @@
-/*
- * JsonFormatter.cpp
- *
- *  Created on: Mar 20, 2018
- *      Author: Denys Asauliak <d.asauliak@gmail.com>
+/*!
+ * \file JsonFormatter.cpp
+ * \author Denys Asauliak <d.asauliak@gmail.com>
+ * \date Mar 20, 2018
  */
 
 #include "JsonFormatter.hpp"

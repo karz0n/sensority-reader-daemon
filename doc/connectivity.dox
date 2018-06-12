@@ -1,0 +1,3 @@
+/*! \defgroup connectivity Connectivity module
+    Connectivity module defines classes which provides connection between data provider and consumers.
+*/
