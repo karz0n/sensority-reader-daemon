@@ -62,8 +62,7 @@ if(NOT Poco_ROOT_DIR)
         NAMES
             "Foundation/include/Poco/Poco.h"
         HINTS
-            ${Poco_HINTS}
-    )
+            ${Poco_HINTS})
     if(NOT Poco_ROOT_DIR)
         # this means poco may have a different directory structure, maybe it was installed, let's check for that
         message(STATUS "Looking for Poco install directory structure.")
