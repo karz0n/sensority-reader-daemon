@@ -24,8 +24,7 @@ namespace common {
 /*!
  * \brief The ThreadTarget class.
  */
-class ThreadTarget : public Runnable
-{
+class ThreadTarget : public Runnable {
 public:
     ThreadTarget();
     ~ThreadTarget() override;

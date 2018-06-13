@@ -22,8 +22,7 @@ namespace common {
  * \brief The Thread class.
  * \details Basic thread class for thread.
  */
-class Thread
-{
+class Thread {
 public:
     Thread();                   //!< Default ctor.
     Thread(Runnable& target);   //!< Construct and start thread using given target.

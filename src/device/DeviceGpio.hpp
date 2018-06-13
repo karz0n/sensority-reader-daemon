@@ -28,8 +28,7 @@ const unsigned long long DEVICE_MAX_COUNT = std::numeric_limits<unsigned long lo
  * \brief The DeviceGpio class.
  * \details Helper class to work with GPIO.
  */
-class DeviceGpio
-{
+class DeviceGpio {
 public:
     using Ptr = std::shared_ptr<DeviceGpio>; //!< The pointer type of class.
 

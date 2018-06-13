@@ -44,7 +44,7 @@ public:
     void initialize();
 
     /*!
-     * \brief Cleanup resources of library.
+     * \brief Clear system resources holded by library.
      */
     void cleanup();
 
@@ -60,8 +60,8 @@ public:
     DeviceLibrary operator=(const DeviceLibrary&) = delete;
 
 private:
-    DeviceLibrary();
-    ~DeviceLibrary();
+    DeviceLibrary();   //!< Default ctor.
+    ~DeviceLibrary();  //!< Default dtor.
 
 private:
     unsigned long _counter;

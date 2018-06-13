@@ -20,8 +20,7 @@ namespace sensor {
 /*!
  * \brief The SensorReadingStrategyFactory class
  */
-class SensorReadingStrategyFactory
-{
+class SensorReadingStrategyFactory {
 public:
     /*!
      * \brief Create reading strategy object.

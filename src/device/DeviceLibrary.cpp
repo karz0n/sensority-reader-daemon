@@ -43,6 +43,8 @@ void DeviceLibrary::initialize()
 
 void DeviceLibrary::cleanup()
 {
+    poco_assert_msg(_counter > 0, "Library not inialized");
+
     if (--_counter > 0) {
         return;
     }

@@ -17,8 +17,7 @@ namespace common {
 /*!
  * \brief The Runnable class.
  */
-class Runnable
-{
+class Runnable {
 public:
     Runnable() = default;           //!< Default ctor.
     virtual ~Runnable() = default;  //!< Default dtor.

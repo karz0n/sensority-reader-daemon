@@ -20,8 +20,7 @@ namespace formatter {
  * \brief The FormatterFactory class.
  * \details Formatter factory which create instance of specific formatter class.
  */
-class FormatterFactory
-{
+class FormatterFactory {
 public:
     /*!
      * \brief Create instance of specific formatter class.
