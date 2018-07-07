@@ -5,7 +5,19 @@ target_sources(${PROJECT_NAME}
         "${CMAKE_CURRENT_SOURCE_DIR}/HttpDataRequestHandlerFactory.hpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/HttpDataRequestHandlerFactory.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/HttpDataServer.hpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/HttpDataServer.cpp")
+        "${CMAKE_CURRENT_SOURCE_DIR}/HttpDataServer.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/MqttCommon.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/MqttCommon.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/MqttLibrary.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/MqttLibrary.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/MqttEndpoint.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/MqttEndpoint.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/MqttSource.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/MqttSource.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/MqttTarget.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/MqttTarget.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/MqttNotifier.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/MqttNotifier.cpp")
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE

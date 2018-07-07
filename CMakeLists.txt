@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 
-#------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # Project Configuration
-#------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 project(sensority-reader-daemon
     VERSION
@@ -14,9 +14,9 @@ project(sensority-reader-daemon
 
 option(BUILD_DOC "Build documentation" ON)
 
-#------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # Toolchain Configuration
-#------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 if(DEFINED ENV{ARM_SDK_PATH})
     include("${PROJECT_SOURCE_DIR}/cmake/toolchains/arm-toolchain.cmake")
@@ -25,17 +25,22 @@ if(DEFINED ENV{ARM_DEPLOY_PATH})
     include("${PROJECT_SOURCE_DIR}/cmake/macros/arm-deployment.cmake")
 endif()
 
-#------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # Dependency Configuration
-#------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
 
-find_package(Threads REQUIRED)
-find_package(Bcm2835 REQUIRED)
+find_package(Threads
+    REQUIRED)
+find_package(Bcm2835
+    REQUIRED)
 find_package(Poco
     REQUIRED
+    COMPONENTS
         Util JSON XML Net Foundation)
+find_package(Mosquitto
+    REQUIRED)
 
 if(BUILD_DOC)
     find_package(Doxygen
@@ -43,26 +48,33 @@ if(BUILD_DOC)
             dot)
 endif()
 
-#------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # Target Configuration
-#------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 add_executable(${PROJECT_NAME} "")
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    CXX_STANDARD 17
-    CXX_STANDARD_REQUIRED YES)
+set_target_properties(${PROJECT_NAME}
+    PROPERTIES
+        CXX_STANDARD 17
+        CXX_STANDARD_REQUIRED YES)
 
-target_include_directories(${PROJECT_NAME} PUBLIC
-    ${Bcm2835_INCLUDE_DIRS}
-    ${Mosquitto_INCLUDE_DIRS}
-    ${Poco_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        ${Bcm2835_INCLUDE_DIRS}
+        ${Poco_INCLUDE_DIRS}
+        ${Mosquitto_INCLUDE_DIRS})
 
 target_link_libraries(${PROJECT_NAME}
-    ${CMAKE_THREAD_LIBS_INIT}
-    ${Bcm2835_LIBRARIES}
-    ${Mosquitto_LIBRARIES}
-    ${Poco_LIBRARIES})
+    PRIVATE
+        ${CMAKE_THREAD_LIBS_INIT}
+        ${Bcm2835_LIBRARIES}
+        ${Poco_LIBRARIES}
+        ${Mosquitto_LIBRARIES})
+
+#-------------------------------------------------------------------------------
+# Structure Configuration
+#-------------------------------------------------------------------------------
 
 add_subdirectory(src)
 add_subdirectory(doc)
