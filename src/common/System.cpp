@@ -25,7 +25,7 @@ void System::setCurrentThreadHighPriority()
 
     int rc = sched_setscheduler(0, SCHED_FIFO, &sched);
     if (rc) {
-        throw Poco::RuntimeException("Error set high priority");
+        throw Poco::RuntimeException("Set high priority failed");
     }
 }
 
@@ -36,7 +36,7 @@ void System::setCurrentThreadDefaultPriority()
 
     int rc = sched_setscheduler(0, SCHED_OTHER, &sched);
     if (rc) {
-        throw Poco::RuntimeException("Error set default priority");
+        throw Poco::RuntimeException("Set default priority failed");
     }
 }
 

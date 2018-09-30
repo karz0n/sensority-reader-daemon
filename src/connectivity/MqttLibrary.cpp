@@ -74,14 +74,14 @@ void MqttLibrary::cleanup()
     }
 }
 
-MqttEndpoint::Ptr MqttLibrary::endpoint(bool cleanSession)
+MqttEndpoint::Ptr MqttLibrary::client(bool cleanSession)
 {
     UUIDGenerator& g = UUIDGenerator::defaultGenerator();
-    return endpoint(g.createRandom().toString(),
+    return client(g.createRandom().toString(),
                     cleanSession);
 }
 
-MqttEndpoint::Ptr MqttLibrary::endpoint(const std::string& id, bool cleanSession)
+MqttEndpoint::Ptr MqttLibrary::client(const std::string& id, bool cleanSession)
 {
     if (!isInitialized()) {
         initialize();

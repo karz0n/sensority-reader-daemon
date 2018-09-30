@@ -8,14 +8,12 @@
 #define HTTPDATASERVER_HPP
 
 #include <memory>
-#include <string>
-#include <utility>
 
 #include <Poco/Net/HTTPServer.h>
 
-#include "common/Runnable.hpp"
-#include "formatter/Formatter.hpp"
-#include "sensor/SensorReadableData.hpp"
+#include "data/StorageManager.hpp"
+
+#include "HttpCommon.hpp"
 
 namespace connectivity {
 
@@ -27,55 +25,43 @@ namespace connectivity {
 /*!
  * \brief The HttpDataServer class.
  */
-class HttpDataServer : public common::Runnable {
+class HttpDataServer {
 public:
     using Ptr = std::unique_ptr<HttpDataServer>;    //!< Pointer to the class
 
     /*!
      * \brief Http data server contructor.
-     * \param port specific listen port.
+     * \param port the number of port to listen.
      * \param format type of formatter in string form.
      * \param data pointer to readable data.
      */
-    HttpDataServer(unsigned short port,
-                   const std::string& format,
-                   sensor::SensorReadableData::Ptr data);
-    ~HttpDataServer() override;
+    HttpDataServer(data::StorageManager::Ptr storageManager,
+                   data::OutputFormats format = DEFAULT_HTTP_FORMAT,
+                   unsigned short port = DEFAULT_HTTP_PORT);
+    ~HttpDataServer();
 
-    /*!
-     * \brief Shutdown http server.
-     */
-    void shutdown();
+    inline bool isRunned() const;
 
-public:
-    inline bool isRunned() const override
-    {
-        return _runned;
-    }
-
-    void run() override;
-
-public:
-    /*!
-     * Factory method
-     */
-    template<typename ...As>
-    static inline Ptr create(As... args)
-    {
-        return std::make_unique<HttpDataServer>(std::forward<As>(args)...);
-    }
+    void run();
+    void stop();
 
 public:
     HttpDataServer(const HttpDataServer&) = delete;
     HttpDataServer& operator=(const HttpDataServer&) = delete;
 
 private:
-    formatter::Formatter::Ptr getFormatter(const std::string& format);
-
-private:
     std::unique_ptr<Poco::Net::HTTPServer> _server;
     bool _runned;
 };
+
+//
+// Inlines
+//
+
+bool HttpDataServer::isRunned() const
+{
+    return _runned;
+}
 
 /*! @} */
 

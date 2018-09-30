@@ -1,0 +1,28 @@
+target_sources(${PROJECT_NAME}
+    PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/StorageCommon.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/StorageCommon.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/Formattable.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/Formatter.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/FormatterFactory.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/FormatterFactory.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/JsonFormatter.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/JsonFormatter.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/StringFormatter.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/StringFormatter.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/FormatterCommon.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/FormatterCommon.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/DataObserver.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/DataObserver.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/DataObservable.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/DataObservable.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/Storage.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/Storage.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/StorageManager.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/StorageManager.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/MemoryStorage.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/MemoryStorage.cpp")
+
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}")

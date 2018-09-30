@@ -8,33 +8,35 @@
 
 #include <Poco/Net/HTTPServerParams.h>
 
-#include "formatter/FormatterFactory.hpp"
+#include "data/FormatterFactory.hpp"
 
 #include "HttpDataRequestHandlerFactory.hpp"
 
 using Poco::Net::HTTPServerParams;
 using Poco::Net::HTTPServer;
 
-using sensor::SensorReadableData;
+using data::StorageManager;
+using data::OutputFormats;
+using data::FormatterFactory;
 
 namespace connectivity {
 
 HttpDataServer::HttpDataServer(
-        unsigned short port,
-        const std::string& format,
-        sensor::SensorReadableData::Ptr data)
+        StorageManager::Ptr m,
+        OutputFormats f /*= DEFAULT_HTTP_FORMAT*/,
+        unsigned short p /*= DEFAULT_HTTP_PORT*/)
     : _runned(false)
 {
     _server = std::make_unique<HTTPServer>(
-        new HttpDataRequestHandlerFactory(data, getFormatter(format)),
-        port,
+        new HttpDataRequestHandlerFactory(m, FormatterFactory::create(f)),
+        p,
         new HTTPServerParams);
 }
 
 HttpDataServer::~HttpDataServer()
 {
     if (isRunned()) {
-        shutdown();
+        stop();
     }
 }
 
@@ -47,18 +49,13 @@ void HttpDataServer::run()
     _runned = true;
 }
 
-void HttpDataServer::shutdown()
+void HttpDataServer::stop()
 {
     poco_assert_msg(isRunned(), "Http server has already been stopped");
 
     _server->stopAll(true);
 
     _runned = false;
-}
-
-formatter::Formatter::Ptr HttpDataServer::getFormatter(const std::string& format)
-{
-    return formatter::FormatterFactory::create(format);
 }
 
 } // namespace connectivity {

@@ -6,101 +6,53 @@
 
 #include "MqttNotifier.hpp"
 
-#include <Poco/NObserver.h>
-
-using Poco::NObserver;
+#include "data/FormatterFactory.hpp"
 
 namespace connectivity {
 
-MqttNotifier::MqttNotifier()
+MqttNotifier::MqttNotifier(MqttEndpoint::Ptr e, data::OutputFormats format /*= DEFAULT_HTTP_FORMAT*/)
+    : _connected{false}
+    , _endpoint{e}
 {
+    _formatter = data::FormatterFactory::create(format);
 
+    _endpoint->inject(*this);
 }
 
-void MqttNotifier::inject(MqttTarget& target)
+MqttNotifier::~MqttNotifier()
 {
-    _nc.addObserver(
-        NObserver<MqttTarget, MqttConnectNotification>(target, &MqttTarget::on));
-    _nc.addObserver(
-        NObserver<MqttTarget, MqttDisconnectNotification>(target, &MqttTarget::on));
-    _nc.addObserver(
-        NObserver<MqttTarget, MqttPublishNotification>(target, &MqttTarget::on));
-}
-
-void MqttNotifier::eject(MqttTarget& target)
-{
-    _nc.removeObserver(
-        NObserver<MqttTarget, MqttConnectNotification>(target, &MqttTarget::on));
-    _nc.removeObserver(
-        NObserver<MqttTarget, MqttDisconnectNotification>(target, &MqttTarget::on));
-    _nc.removeObserver(
-        NObserver<MqttTarget, MqttPublishNotification>(target, &MqttTarget::on));
-}
-
-void MqttNotifier::emitConnectNotification(MqttConnectionStatusCodes status)
-{
-    if (!_nc.hasObservers()) {
-        return;
+    if (!_storages.empty()) {
+        for (auto& storage : _storages) {
+            storage->eject(*this);
+        }
     }
-    _nc.postNotification(
-                new MqttConnectNotification(*this, status));
+
+    _endpoint->eject(*this);
 }
 
-void MqttNotifier::emitDisconnectNotification(int reason)
+void MqttNotifier::on(const MqttConnectNotification::Ptr& event)
 {
-    if (!_nc.hasObservers()) {
-        return;
-    }
-    _nc.postNotification(
-                new MqttDisconnectNotification(*this, reason));
+    _connected = event->isSuccess();
 }
 
-void MqttNotifier::emitPublishNotification(int messageId)
+void MqttNotifier::on(const MqttDisconnectNotification::Ptr& event)
 {
-    if (!_nc.hasObservers()) {
-        return;
-    }
-    _nc.postNotification(
-                new MqttPublishNotification(*this, messageId));
+    _connected = false;
 }
 
-void MqttNotifier::emitMessageNotification(const MqttMessage& message)
+void MqttNotifier::on(const data::StorageUpdateNotification::Ptr& event)
 {
-    if (!_nc.hasObservers()) {
-        return;
+    if (_connected) {
+        auto& s = event->storage();
+        _endpoint->publish(s.name(), s.format(*_formatter));
     }
-    _nc.postNotification(
-                new MqttMessageNotification(*this, message));
 }
 
-void MqttNotifier::emitSubscribeNotification(int messageId, const MqttGrantedQoS& qos)
+void MqttNotifier::watch(data::Storage::Ptr storage)
 {
-    if (!_nc.hasObservers()) {
-        return;
-    }
-    _nc.postNotification(
-                new MqttSubscribeNotification(*this, messageId, qos));
-}
+    _storages.push_back(storage);
 
-void MqttNotifier::emitUnsubscribeNotification(int messageId)
-{
-    if (!_nc.hasObservers()) {
-        return;
-    }
-    _nc.postNotification(
-                new MqttUnsubscribeNotification(*this, messageId));
-}
-
-void MqttNotifier::emitLogNotification(MqttLogLevel level,
-                                       const std::string& message)
-{
-    if (!_nc.hasObservers()) {
-        return;
-    }
-    _nc.postNotification(
-                new MqttLogNotification(*this, level, message));
+    storage->inject(*this);
 }
 
 }
-
-

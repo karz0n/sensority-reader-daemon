@@ -11,10 +11,7 @@
 
 #include <Poco/Util/ServerApplication.h>
 
-#include "connectivity/HttpDataServer.hpp"
-#include "device/DeviceCommon.hpp"
-#include "sensor/SensorCommon.hpp"
-#include "sensor/SensorReader.hpp"
+#include "hardware/SensorReaderManager.hpp"
 
 /*!
  * \brief The App class
@@ -55,18 +52,20 @@ protected:
 private:
     void displayHelp();
 
-    sensor::SensorReader::Ptr createSensorReader();
-    connectivity::HttpDataServer::Ptr createHttpServer(sensor::SensorReadableData::Ptr);
+    hardware::SensorReaderManager::Ptr initSensorReaderManager();
+    void initHttpDataServer();
+    void initMqttEndpoint();
 
-    bool isHttpEnabled() const;
-    unsigned short getHttpPort() const;
-    std::string getHttpFormat() const;
+//    bool isHttpEnabled() const;
+//    unsigned short getHttpPort() const;
+//    std::string getHttpFormat() const;
 
-    device::PinNum getDevicePin() const;
-    sensor::SensorTypes getDeviceType() const;
+//    device::PinNum getDevicePin() const;
+//    sensor::SensorTypes getDeviceType() const;
 
 private:
 	bool _helpRequested;
+    hardware::SensorReaderManager _manager;
 };
 
 #endif // APP_HPP

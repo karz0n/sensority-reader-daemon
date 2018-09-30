@@ -10,22 +10,23 @@
 #include <Poco/Util/Application.h>
 #endif
 
-#include "sensor/SensorReadableData.hpp"
-#include "formatter/Formatter.hpp"
+#include "data/StorageManager.hpp"
+#include "data/Formatter.hpp"
 
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
 
-using sensor::SensorReadableData;
-using formatter::Formats;
-using formatter::Formatter;
+using data::StorageManager;
+using data::Formatter;
+using data::OutputFormats;
 
 namespace connectivity {
 
 HttpDataRequestHandler::HttpDataRequestHandler(
-        const SensorReadableData& d,
+        const data::StorageManager& m,
         const Formatter& f)
-    : _data(d), _formatter(f)
+    : _storageManager{m}
+    , _formatter{f}
 { }
 
 void HttpDataRequestHandler::handleRequest(HTTPServerRequest& request,
@@ -39,20 +40,14 @@ void HttpDataRequestHandler::handleRequest(HTTPServerRequest& request,
 #endif
 
     response.setChunkedTransferEncoding(true);
+    response.setContentType("text/plain");
 
-    switch (_formatter.type()) {
-    case Formats::text:
-        response.setContentType("text/plain");
-        break;
-    case Formats::json:
+    if (_formatter.type() == OutputFormats::json) {
         response.setContentType("application/json");
-        break;
-    default:
-        response.setContentType("text/plain");
     }
 
     auto& os = response.send();
-    os << _data.format(_formatter);
+    os << _storageManager.format(_formatter);
 }
 
 } // namespace connectivity

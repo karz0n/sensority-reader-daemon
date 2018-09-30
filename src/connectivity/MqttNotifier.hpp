@@ -7,13 +7,19 @@
 #ifndef MQTTNOTIFIER_HPP
 #define MQTTNOTIFIER_HPP
 
-#include <string>
+#include <atomic>
+#include <memory>
+#include <list>
 
-#include <Poco/NotificationCenter.h>
+#include "data/DataObserver.hpp"
+#include "data/Formatter.hpp"
+#include "data/Storage.hpp"
 
-#include "MqttSource.hpp"
-#include "MqttCommon.hpp"
-#include "MqttTarget.hpp"
+#include "MqttClient.hpp"
+
+namespace data {
+class Storage;
+}
 
 namespace connectivity {
 
@@ -26,71 +32,34 @@ namespace connectivity {
  * \brief The MqttNotifier class.
  *
  */
-class MqttNotifier : public MqttSource
+class MqttNotifier : private data::DataObserver,
+                     private MqttObserver
 {
 public:
-    MqttNotifier();
+    using Ptr = std::unique_ptr<MqttNotifier>;
+
+    MqttNotifier(MqttEndpoint::Ptr endpoint, data::OutputFormats format);
+    virtual ~MqttNotifier();
 
     /*!
-     * \brief inject
-     * \param target
+     * \brief watch
+     *
+     * \param storage
      */
-    void inject(MqttTarget& target);
-
-    /*!
-     * \brief eject
-     * \param target
-     */
-    void eject(MqttTarget& target);
-
-protected:
-
-    /*!
-     * \brief emitConnectNotification
-     * \param statusCode
-     */
-    void emitConnectNotification(MqttConnectionStatusCodes statusCode);
-
-    /*!
-     * \brief emitDisconnectNotification
-     * \param reason
-     */
-    void emitDisconnectNotification(int reason);
-
-    /*!
-     * \brief emitPublishNotification
-     * \param messageId
-     */
-    void emitPublishNotification(int messageId);
-
-    /*!
-     * \brief emitMessageNotification
-     * \param message
-     */
-    void emitMessageNotification(const MqttMessage& message);
-
-    /*!
-     * \brief emitSubscribeNotification
-     * \param messageId
-     * \param qos
-     */
-    void emitSubscribeNotification(int messageId, const MqttGrantedQoS& qos);
-
-    /*!
-     * \brief emitUnsubscribeNotification
-     * \param messageId
-     */
-    void emitUnsubscribeNotification(int messageId);
-
-    /*!
-     * \brief emitLogNotification
-     * \param level
-     * \param message
-     */
-    void emitLogNotification(MqttLogLevel level, const std::string& message);
+    void watch(data::Storage::Ptr storage);
 
 private:
-    Poco::NotificationCenter _nc;
+    void on(const MqttConnectNotification::Ptr& event) override;
+    void on(const MqttDisconnectNotification::Ptr& event) override;
+
+private:
+    void on(const data::StorageUpdateNotification::Ptr& event) override;
+
+private:
+    std::atomic<bool> _connected;
+    MqttEndpoint::Ptr _endpoint;
+    data::Formatter::Ptr _formatter;
+    std::list<data::Storage::Ptr> _storages;
 };
 
 /*! @} */

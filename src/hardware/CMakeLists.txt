@@ -1,0 +1,22 @@
+target_sources(${PROJECT_NAME}
+    PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/DeviceCommon.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/DeviceGpio.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/DeviceGpio.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/DeviceLibrary.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/DeviceLibrary.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorCommon.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorCommon.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReader.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReader.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReaderFactory.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReaderFactory.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReaderManager.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/SensorReaderManager.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/TemperatureSensorReader.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/TemperatureSensorReader.cpp"
+        )
+
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}")

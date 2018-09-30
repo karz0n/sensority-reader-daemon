@@ -7,13 +7,11 @@
 #ifndef HTTPDATAREQUESTHANDLERFACTORY_HPP
 #define HTTPDATAREQUESTHANDLERFACTORY_HPP
 
-#include <memory>
-
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPRequestHandlerFactory.h>
 
-#include "formatter/Formatter.hpp"
-#include "sensor/SensorReadableData.hpp"
+#include "data/StorageManager.hpp"
+#include "data/Formatter.hpp"
 
 namespace connectivity {
 
@@ -32,9 +30,8 @@ public:
      * \param data pointer to the readable data object.
      * \param formatter pointer to the formatter object.
      */
-    HttpDataRequestHandlerFactory(
-            sensor::SensorReadableData::Ptr data,
-            formatter::Formatter::Ptr formatter);
+    HttpDataRequestHandlerFactory(data::StorageManager::Ptr storageManager,
+                                  data::Formatter::Ptr formatter);
 
     /*!
      * \brief Create request handler object.
@@ -44,8 +41,8 @@ public:
     Poco::Net::HTTPRequestHandler* createRequestHandler(const Poco::Net::HTTPServerRequest& request);
 
 private:
-    sensor::SensorReadableData::Ptr _data;
-    formatter::Formatter::Ptr _formatter;
+    data::StorageManager::Ptr _storageManager;
+    data::Formatter::Ptr _formatter;
 };
 
 /*! @} */

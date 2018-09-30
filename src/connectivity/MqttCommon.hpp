@@ -10,12 +10,10 @@
 #include <string_view>
 #include <string>
 #include <vector>
-#include <ostream>
-#include <functional>
 
 #include <Poco/Notification.h>
 
-#include "MqttSource.hpp"
+#include "data/FormatterCommon.hpp"
 
 /*!
  * Forward declaration of mosquitto context
@@ -29,6 +27,11 @@ struct mosquitto_message;
 
 namespace connectivity {
 
+/**
+ *
+ */
+class MqttObservable;
+
 /*!
  * \addtogroup connectivity
  * @{
@@ -41,8 +44,11 @@ namespace connectivity {
  */
 class MqttLibraryVersion {
 public:
-
-    MqttLibraryVersion() = default; //!< Default ctor.
+    MqttLibraryVersion()
+        : _maj{0}
+        , _min{0}
+        , _rev{0}
+    { }
 
     /*!
      * \brief Configure version class object.
@@ -51,9 +57,9 @@ public:
      * \param rev revision of library.
      */
     MqttLibraryVersion(int maj, int min, int rev)
-        : _major{maj}
-        , _minor{min}
-        , _revision{rev}
+        : _maj{maj}
+        , _min{min}
+        , _rev{rev}
     { }
 
     /*!
@@ -62,7 +68,7 @@ public:
      */
     int majorVersion() const
     {
-        return _major;
+        return _maj;
     }
 
     /*!
@@ -71,7 +77,7 @@ public:
      */
     int minorVersion() const
     {
-        return _minor;
+        return _min;
     }
 
     /*!
@@ -80,13 +86,13 @@ public:
      */
     int revision() const
     {
-        return _revision;
+        return _rev;
     }
 
 private:
-    int _major{0};
-    int _minor{0};
-    int _revision{0};
+    int _maj;
+    int _min;
+    int _rev;
 };
 
 /*!
@@ -172,6 +178,11 @@ constexpr unsigned short MQTT_DEFAULT_INSECURE_PORT = 1883;
 constexpr unsigned short MQTT_DEFAULT_SECURE_PORT = 8883;
 
 /*!
+ * \brief MQTT_DEFAULT_OUTPUT_FORMAt
+ */
+constexpr data::OutputFormats MQTT_DEFAULT_OUTPUT_FORMAt = data::OutputFormats::json;
+
+/*!
  * \brief Default value of MQTT connection keepalive timeout.
  */
 constexpr int MQTT_DEFAULT_KEEPALIVE = 60;
@@ -184,7 +195,7 @@ constexpr int MQTT_DEFAULT_QOS_VALUE = 0;
 /*!
  * \brief Default value of MQTT retain to be used for the message.
  */
-const bool MQTT_DEFAULT_RETAIN_VALUE = false;
+constexpr bool MQTT_DEFAULT_RETAIN_VALUE = false;
 
 /*!
  * \brief String view for TLS v1 option.
@@ -208,14 +219,14 @@ constexpr std::string_view MQTT_TLS_V12{"tlsv1.2"};
  * \param errorCode an error number.
  * \return string describing the error..
  */
-static std::string stringifyErrorCode(int errorCode);
+std::string stringifyErrorCode(int errorCode);
 
 /*!
  * \brief Call to get string description of a connection result.
  * \param connackCode connection result code.
  * \return string describing the result.
  */
-static std::string stringifyConnackCode(int connackCode);
+std::string stringifyConnackCode(int connackCode);
 
 //------------------------------------------------------------------------------
 
@@ -228,7 +239,7 @@ public:
      * \brief MqttNotification
      * \param source
      */
-    MqttNotification(MqttSource& source);
+    MqttNotification(MqttObservable& source);
 
     /*!
      * Default dtor.
@@ -239,10 +250,10 @@ public:
      * \brief source
      * \return
      */
-    MqttSource& source() const;
+    MqttObservable& source() const;
 
 private:
-    MqttSource& _source;
+    MqttObservable& _source;
 };
 
 //------------------------------------------------------------------------------
@@ -261,7 +272,7 @@ public:
      * \param source the source of notification.
      * \param status the status of connection.
      */
-    MqttConnectNotification(MqttSource& source,
+    MqttConnectNotification(MqttObservable& source,
                             MqttConnectionStatusCodes status);
 
     /*!
@@ -303,7 +314,7 @@ public:
      * \param reason the integer value indicating the reason for the disconnect.
      *               A value of 0 means the client has called disconnect.
      */
-    MqttDisconnectNotification(MqttSource& source, int reason);
+    MqttDisconnectNotification(MqttObservable& source, int reason);
 
     /*!
      * \brief reason
@@ -337,7 +348,7 @@ public:
      * \param source the source of notification.
      * \param messageId the message id of the sent message.
      */
-    MqttPublishNotification(MqttSource& source, int messageId);
+    MqttPublishNotification(MqttObservable& source, int messageId);
 
     /*!
      * \brief messageId
@@ -365,7 +376,7 @@ public:
      * \param source the source of notification.
      * \param message the message data.
      */
-    MqttMessageNotification(MqttSource& source,
+    MqttMessageNotification(MqttObservable& source,
                             const MqttMessage& message);
 
     /*!
@@ -396,7 +407,7 @@ public:
      * \param qos an array of integers indicating the granted QoS
      *            for each of the subscriptions.
      */
-    MqttSubscribeNotification(MqttSource& source,
+    MqttSubscribeNotification(MqttObservable& source,
                               int messageId,
                               const MqttGrantedQoS& qos);
 
@@ -431,7 +442,7 @@ public:
      * \param source the source of notification.
      * \param messageId the message id of the subscribe message.
      */
-    MqttUnsubscribeNotification(MqttSource& source,
+    MqttUnsubscribeNotification(MqttObservable& source,
                                 int messageId);
 
     /*!
@@ -459,7 +470,7 @@ public:
      * \param level
      * \param message
      */
-    MqttLogNotification(MqttSource& source,
+    MqttLogNotification(MqttObservable& source,
                         MqttLogLevel level,
                         const std::string& message);
 

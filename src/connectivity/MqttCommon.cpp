@@ -26,18 +26,18 @@ std::string stringifyConnackCode(int connackCode)
 
 //------------------------------------------------------------------------------
 
-MqttNotification::MqttNotification(MqttSource& source)
+MqttNotification::MqttNotification(MqttObservable& source)
     : _source(source)
 { }
 
-MqttSource& MqttNotification::source() const
+MqttObservable& MqttNotification::source() const
 {
     return _source;
 }
 
 //------------------------------------------------------------------------------
 
-MqttConnectNotification::MqttConnectNotification(MqttSource& source,
+MqttConnectNotification::MqttConnectNotification(MqttObservable& source,
                                                  MqttConnectionStatusCodes status)
     : MqttNotification{source}
     , _status{status}
@@ -51,7 +51,7 @@ MqttConnectionStatusCodes MqttConnectNotification::status() const
 std::string MqttConnectNotification::statusAsString() const
 {
     int c = static_cast<int>(status());
-    return stringifyErrorCode(c);
+    return stringifyConnackCode(c);
 }
 
 bool MqttConnectNotification::isSuccess() const
@@ -61,7 +61,7 @@ bool MqttConnectNotification::isSuccess() const
 
 //------------------------------------------------------------------------------
 
-MqttDisconnectNotification::MqttDisconnectNotification(MqttSource& source,
+MqttDisconnectNotification::MqttDisconnectNotification(MqttObservable& source,
                                                        int reason)
     : MqttNotification{source}
     , _reson{reason}
@@ -79,7 +79,7 @@ bool MqttDisconnectNotification::isUnexpected() const
 
 //------------------------------------------------------------------------------
 
-MqttPublishNotification::MqttPublishNotification(MqttSource& source,
+MqttPublishNotification::MqttPublishNotification(MqttObservable& source,
                                                  int messageId)
     : MqttNotification{source}
     , _messageId{messageId}
@@ -92,7 +92,7 @@ int MqttPublishNotification::messageId() const
 
 //------------------------------------------------------------------------------
 
-MqttMessageNotification::MqttMessageNotification(MqttSource& source,
+MqttMessageNotification::MqttMessageNotification(MqttObservable& source,
                                                  const MqttMessage& message)
     : MqttNotification{source}
     , _message{message}
@@ -105,7 +105,7 @@ const MqttMessage& MqttMessageNotification::message() const
 
 //------------------------------------------------------------------------------
 
-MqttSubscribeNotification::MqttSubscribeNotification(MqttSource& source,
+MqttSubscribeNotification::MqttSubscribeNotification(MqttObservable& source,
                                                      int messageId,
                                                      const MqttGrantedQoS& qos)
     : MqttNotification{source}
@@ -125,7 +125,7 @@ const MqttGrantedQoS& MqttSubscribeNotification::qos() const
 
 //------------------------------------------------------------------------------
 
-MqttUnsubscribeNotification::MqttUnsubscribeNotification(MqttSource& source,
+MqttUnsubscribeNotification::MqttUnsubscribeNotification(MqttObservable& source,
                                                          int messageId)
     : MqttNotification{source}
     , _messageId{messageId}
@@ -138,7 +138,7 @@ int MqttUnsubscribeNotification::messageId() const
 
 //------------------------------------------------------------------------------
 
-MqttLogNotification::MqttLogNotification(MqttSource& source,
+MqttLogNotification::MqttLogNotification(MqttObservable& source,
                     MqttLogLevel level,
                     const std::string& message)
     : MqttNotification{source}

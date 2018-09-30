@@ -13,9 +13,10 @@ using Poco::Net::HTTPServerRequest;
 namespace connectivity {
 
 HttpDataRequestHandlerFactory::HttpDataRequestHandlerFactory(
-        sensor::SensorReadableData::Ptr d,
-        formatter::Formatter::Ptr f)
-    : _data(d), _formatter(f)
+        data::StorageManager::Ptr m,
+        data::Formatter::Ptr f)
+    : _storageManager{m}
+    , _formatter{f}
 { }
 
 HTTPRequestHandler* HttpDataRequestHandlerFactory::createRequestHandler(const HTTPServerRequest& request)
@@ -23,8 +24,7 @@ HTTPRequestHandler* HttpDataRequestHandlerFactory::createRequestHandler(const HT
     if (request.getURI() != "/") {
         return nullptr;
     }
-
-    return new HttpDataRequestHandler(*_data, *_formatter);
+    return new HttpDataRequestHandler(*_storageManager, *_formatter);
 }
 
 } // namespace connectivity

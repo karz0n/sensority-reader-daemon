@@ -11,12 +11,9 @@
 #include <Poco/Net/HTTPServerResponse.h>
 #include <Poco/Net/HTTPRequestHandler.h>
 
-namespace formatter {
+namespace data {
+class StorageManager;
 class Formatter;
-}
-
-namespace sensor {
-class SensorReadableData;
 }
 
 namespace connectivity {
@@ -36,22 +33,20 @@ public:
      * \param storage reference to the readable data object.
      * \param formatter reference to the formatter object.
      */
-    HttpDataRequestHandler(
-            const sensor::SensorReadableData& storage,
-            const formatter::Formatter& formatter);
+    HttpDataRequestHandler(const data::StorageManager& storageManager,
+                           const data::Formatter& formatter);
 
     /*!
      * \brief Handler request.
      * \param request reference to the http request.
      * \param response reference to the response.
      */
-    void handleRequest(
-            Poco::Net::HTTPServerRequest& request,
-            Poco::Net::HTTPServerResponse& response);
+    void handleRequest(Poco::Net::HTTPServerRequest& request,
+                       Poco::Net::HTTPServerResponse& response);
 
 private:
-    const sensor::SensorReadableData& _data;
-    const formatter::Formatter& _formatter;
+    const data::StorageManager& _storageManager;
+    const data::Formatter& _formatter;
 };
 
 /*! @} */

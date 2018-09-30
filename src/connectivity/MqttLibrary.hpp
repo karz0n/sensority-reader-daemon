@@ -11,7 +11,7 @@
 #include <memory>
 
 #include "MqttCommon.hpp"
-#include "MqttEndpoint.hpp"
+#include "MqttClient.hpp"
 
 namespace connectivity {
 
@@ -54,19 +54,19 @@ public:
     void cleanup();
 
     /*!
-     * \brief endpoint
+     * \brief client
      * \param cleanSession
      * \return
      */
-    MqttEndpoint::Ptr endpoint(bool cleanSession = true);
+    MqttEndpoint::Ptr client(bool cleanSession = true);
 
     /*!
-     * \brief endpoint
+     * \brief client
      * \param id
      * \param cleanSession
      * \return
      */
-    MqttEndpoint::Ptr endpoint(const std::string& id, bool cleanSession = true);
+    MqttEndpoint::Ptr client(const std::string& id, bool cleanSession = true);
 
 public:
     MqttLibrary(const MqttLibrary&) = delete;
